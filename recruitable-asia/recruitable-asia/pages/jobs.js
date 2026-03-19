@@ -278,17 +278,17 @@ function ApplyModal({ job, onClose }) {
     e.preventDefault()
     setStatus('sending')
     try {
+      const formData = new FormData()
+      formData.append('name', form.name)
+      formData.append('email', form.email)
+      formData.append('note', form.note)
+      formData.append('jobTitle', job.title)
+      formData.append('jobCompany', job.company)
+      if (file) formData.append('cv', file, file.name)
+
       const res = await fetch('/api/apply', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          note: form.note,
-          jobTitle: job.title,
-          jobCompany: job.company,
-          fileName: file ? file.name : null,
-        }),
+        body: formData,
       })
       if (!res.ok) throw new Error('Failed')
       setStatus('sent')

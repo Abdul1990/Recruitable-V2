@@ -1,36 +1,71 @@
 /**
  * API Route: /api/apply
  * Handles job application form submissions.
- * CV file name is captured; for actual file storage add S3/Cloudflare R2.
- * Requires RESEND_API_KEY in environment variables to send real emails.
+ * Parses multipart form data, reads CV file, and attaches it to the notification email.
+ * Requires RESEND_API_KEY in environment variables.
  */
 import { Resend } from 'resend'
+import formidable from 'formidable'
+import fs from 'fs'
+
+export const config = {
+  api: { bodyParser: false },
+}
+
+function parseForm(req) {
+  return new Promise((resolve, reject) => {
+    const form = formidable({ maxFileSize: 10 * 1024 * 1024 })
+    form.parse(req, (err, fields, files) => {
+      if (err) reject(err)
+      else resolve({ fields, files })
+    })
+  })
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { name, email, note, jobTitle, jobCompany, fileName } = req.body
+  let fields, files
+  try {
+    ;({ fields, files } = await parseForm(req))
+  } catch {
+    return res.status(400).json({ error: 'Invalid form data' })
+  }
+
+  const name = Array.isArray(fields.name) ? fields.name[0] : fields.name
+  const email = Array.isArray(fields.email) ? fields.email[0] : fields.email
+  const note = Array.isArray(fields.note) ? fields.note[0] : fields.note
+  const jobTitle = Array.isArray(fields.jobTitle) ? fields.jobTitle[0] : fields.jobTitle
+  const jobCompany = Array.isArray(fields.jobCompany) ? fields.jobCompany[0] : fields.jobCompany
+  const cvFile = files.cv ? (Array.isArray(files.cv) ? files.cv[0] : files.cv) : null
 
   if (!name || !email) {
     return res.status(400).json({ error: 'Name and email are required' })
   }
 
-  console.log('=== NEW JOB APPLICATION ===')
-  console.log(`Applicant: ${name} <${email}> | Role: ${jobTitle} at ${jobCompany}`)
-  console.log(`Time: ${new Date().toISOString()}`)
-
   if (process.env.RESEND_API_KEY) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
 
-      // Notify internal team
+      // Build attachments array if CV was uploaded
+      const attachments = []
+      if (cvFile) {
+        const fileBuffer = fs.readFileSync(cvFile.filepath)
+        attachments.push({
+          filename: cvFile.originalFilename || 'cv.pdf',
+          content: fileBuffer,
+        })
+      }
+
+      // Notify internal team with CV attached
       await resend.emails.send({
         from: 'applications@recruitable.asia',
         to: 'info@recruitable.asia',
         replyTo: `${name} <${email}>`,
         subject: `New Application — ${jobTitle} at ${jobCompany} | ${name}`,
+        attachments,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#f4f6fb;border-radius:12px;">
             <div style="background:#2D2D3A;padding:20px 28px;border-radius:8px 8px 0 0;">
@@ -43,7 +78,7 @@ export default async function handler(req, res) {
                 <tr><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#8A8A9E;font-size:12px;font-weight:700;text-transform:uppercase;">Email</td><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;"><a href="mailto:${email}" style="color:#29B6D8;font-weight:600;">${email}</a></td></tr>
                 <tr><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#8A8A9E;font-size:12px;font-weight:700;text-transform:uppercase;">Role</td><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#2D2D3A;font-weight:600;">${jobTitle}</td></tr>
                 <tr><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#8A8A9E;font-size:12px;font-weight:700;text-transform:uppercase;">Company</td><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#2D2D3A;font-weight:600;">${jobCompany}</td></tr>
-                <tr><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#8A8A9E;font-size:12px;font-weight:700;text-transform:uppercase;">CV File</td><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#2D2D3A;">${fileName || 'Not provided'}</td></tr>
+                <tr><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#8A8A9E;font-size:12px;font-weight:700;text-transform:uppercase;">CV</td><td style="padding:10px 0;border-bottom:1px solid #e8ecf4;color:#2D2D3A;">${cvFile ? `${cvFile.originalFilename} (attached)` : 'Not provided'}</td></tr>
                 <tr><td style="padding:10px 0;color:#8A8A9E;font-size:12px;font-weight:700;text-transform:uppercase;vertical-align:top;padding-top:14px;">Note</td><td style="padding:10px 0;color:#2D2D3A;line-height:1.6;padding-top:14px;">${note ? note.replace(/\n/g, '<br/>') : '—'}</td></tr>
               </table>
               <div style="margin-top:24px;padding:16px;background:#fff8f0;border-radius:8px;font-size:13px;color:#2D2D3A;border-left:3px solid #F5A623;">
@@ -77,12 +112,16 @@ export default async function handler(req, res) {
           </div>
         `,
       })
+
+      // Clean up temp file
+      if (cvFile) fs.unlinkSync(cvFile.filepath)
+
     } catch (err) {
       console.error('Resend error (apply):', err)
       return res.status(500).json({ error: 'Failed to send email' })
     }
   } else {
-    console.warn('RESEND_API_KEY not set — email not sent. Add it to your environment variables.')
+    return res.status(500).json({ error: 'Email service not configured. Please contact info@recruitable.asia directly.' })
   }
 
   return res.status(200).json({ success: true })
