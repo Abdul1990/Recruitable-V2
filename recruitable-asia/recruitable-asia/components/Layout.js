@@ -218,7 +218,8 @@ export default function Layout({ children }) {
           </div>
           <div className="footer-right">
             KL · NYC · LON &nbsp;·&nbsp; © 2026 Recruitable Asia. All rights reserved. &nbsp;·&nbsp;{' '}
-            <a href="mailto:info@recruitable.asia">info@recruitable.asia</a>
+            <a href="mailto:info@recruitable.asia">info@recruitable.asia</a> &nbsp;·&nbsp;{' '}
+            <Link href="/privacy">Privacy Policy</Link>
           </div>
         </div>
       </footer>

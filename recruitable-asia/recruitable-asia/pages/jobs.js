@@ -149,6 +149,76 @@ Competitive Malaysian salary + ESOP + visa sponsorship available.`,
   },
   {
     id: 5,
+    title: 'Data Engineer',
+    company: 'AI-Native SaaS Platform',
+    location: 'KL',
+    locationFull: 'Kuala Lumpur, Malaysia',
+    region: 'APAC',
+    type: 'Data Engineering',
+    salary: 'RM 18k – 28k',
+    salaryNote: 'MYR / month',
+    stack: ['Apache Spark', 'dbt', 'Airflow', 'Snowflake', 'Python', 'Kafka'],
+    posted: '1 day ago',
+    color: '#F5A623',
+    badge: 'Top Pick',
+    description: `A fast-growing AI-native SaaS company in KL is building out its core data platform team. This is a greenfield opportunity to architect a modern data stack from the ground up.
+
+**The Role:**
+You will own the design and implementation of the company's data infrastructure — from ingestion pipelines to the analytics layer that powers their AI product suite. You'll work closely with Data Scientists and ML Engineers to ensure data quality, freshness, and reliability at scale.
+
+**What You'll Do:**
+- Design and build scalable ELT pipelines using Apache Spark and dbt on Snowflake
+- Orchestrate workflows with Apache Airflow, ensuring SLA-compliant data delivery
+- Build real-time streaming pipelines using Kafka for event-driven AI features
+- Define and enforce data quality contracts, lineage tracking, and schema governance
+- Partner with ML Engineers to build feature stores and model training datasets
+
+**You Are:**
+- 3+ years of data engineering with production Spark and dbt experience
+- Fluent in Python and SQL — you think in transformations
+- Experience with a modern cloud data warehouse (Snowflake, BigQuery, or Redshift)
+- Comfortable with streaming (Kafka, Flink, or Kinesis)
+- Based in or willing to relocate to Kuala Lumpur
+
+ESOP + visa sponsorship available. Hybrid working from our KL HQ.`,
+  },
+  {
+    id: 6,
+    title: 'Data Engineer',
+    company: 'European FinTech Scale-up',
+    location: 'Europe',
+    locationFull: 'Remote (Europe)',
+    region: 'Europe',
+    type: 'Data Engineering',
+    salary: '€80k – €115k',
+    salaryNote: 'EUR + stock options',
+    stack: ['dbt', 'Airflow', 'BigQuery', 'Python', 'Terraform', 'Kafka'],
+    posted: '2 days ago',
+    color: '#F5A623',
+    badge: 'Remote',
+    description: `A Series B European fintech (€55M raised) needs a Data Engineer to scale the data platform underpinning their risk and compliance AI products.
+
+**The Role:**
+You'll join a senior data team of 5 and take ownership of critical data pipelines serving both internal analytics and external-facing AI features. The stack is modern, the data is complex (financial transactions, KYC, regulatory feeds), and the impact is direct.
+
+**What You'll Do:**
+- Build and maintain ELT pipelines with dbt and BigQuery at petabyte scale
+- Design reliable Airflow DAGs for regulatory reporting and ML feature pipelines
+- Implement real-time event streaming with Kafka for fraud signal processing
+- Own infrastructure-as-code for data infrastructure using Terraform
+- Collaborate with compliance and product teams on data contracts and SLAs
+
+**You Are:**
+- 4+ years data engineering, with strong dbt and BigQuery (or Snowflake) depth
+- Experience with financial data — transactions, risk signals, or regulatory datasets preferred
+- Comfortable with Terraform and cloud-native data infrastructure on GCP or AWS
+- Async-first mindset, fluent written English
+- EU work authorisation required
+
+Fully remote within Europe. Quarterly off-sites in Amsterdam or Berlin.`,
+  },
+  {
+    id: 7,
     title: 'Forward Deployment Engineer',
     company: 'Enterprise AI Platform',
     location: 'NYC',
@@ -185,7 +255,7 @@ This role pays base + commission on client expansion. Top performers earn $280k+
 ]
 
 const REGIONS = ['All', 'USA', 'Europe', 'APAC']
-const TYPES = ['All', 'AI / ML', 'Engineering', 'Forward Deploy']
+const TYPES = ['All', 'AI / ML', 'Data Engineering', 'Engineering', 'Forward Deploy']
 
 // ─── QUICK APPLY MODAL ───────────────────────────────────────────────────────
 function ApplyModal({ job, onClose }) {
@@ -395,7 +465,16 @@ export default function Jobs() {
     <>
       <Head>
         <title>Jobs | Recruitable — Top 5% Tech Roles</title>
-        <meta name="description" content="Browse exclusive top 5% AI, ML, and engineering roles across NYC, SF, Europe, and KL." />
+        <meta name="description" content="Browse exclusive top 5% AI Engineer, Data Engineer, LLM Engineer, and Forward Deployment roles across NYC, SF, Europe, and KL." />
+        <meta property="og:title" content="Top 5% Tech Roles — Recruitable"/>
+        <meta property="og:description" content="Exclusive AI Engineer, Data Engineer, LLM Engineer, and Forward Deployment roles. APAC · Europe · USA. Top 5% only."/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://recruitable.asia/jobs"/>
+        <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Top 5% Tech Roles — Recruitable"/>
+        <meta name="twitter:description" content="AI Engineer, Data Engineer, LLM Engineer, Forward Deployment roles across APAC, Europe, and the US."/>
+        <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
       </Head>
 
       <style>{`

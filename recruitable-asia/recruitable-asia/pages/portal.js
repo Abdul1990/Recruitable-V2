@@ -124,6 +124,15 @@ export default function Portal() {
       <Head>
         <title>Client Portal | Recruitable — Neural Match Engine</title>
         <meta name="description" content="Upload a job description and our Neural Match engine identifies your top 5% candidates from our live database within seconds." />
+        <meta property="og:title" content="Client Portal — Neural Match Engine | Recruitable"/>
+        <meta property="og:description" content="Drop a job description. Get your top 5% shortlist in under 7 days. Pre-vetted AI Engineers, Data Engineers, and more across APAC, Europe, and the US."/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://recruitable.asia/portal"/>
+        <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Neural Match Engine — Recruitable"/>
+        <meta name="twitter:description" content="Drop a JD. Get your top 5% shortlist in under 7 days."/>
+        <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
       </Head>
 
       <style>{`

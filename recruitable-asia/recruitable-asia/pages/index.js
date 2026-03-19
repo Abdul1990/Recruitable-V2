@@ -9,6 +9,7 @@ const DOMAINS = [
   { id:'llm', tag:'AI/ML', title:'LLM Engineering', desc:'Fine-tuning foundational models and architecting RAG-based enterprise agents that move beyond demo into production.', skills:['LangChain','PyTorch','RAG','Prompt Eng.','RLHF'], color:'#29ABE2', accent:'#6B4C9A' },
   { id:'datascience', tag:'AI/ML', title:'Data Science & AI', desc:'Building predictive models that transform complex raw data into reliable business intelligence at scale.', skills:['Python','Scikit-Learn','SQL','Spark','Statistical Modelling'], color:'#6B4C9A', accent:'#E91E8C' },
   { id:'mlops', tag:'AI/ML', title:'MLOps', desc:'Automating the full lifecycle of high-concurrency model deployment — from experiment to production SLA.', skills:['Kubeflow','SageMaker','Docker','CI/CD','Monitoring'], color:'#F7941D', accent:'#FFC107' },
+  { id:'dataeng', tag:'Engineering', title:'Data Engineering', desc:'Building the enterprise-grade data pipelines, warehouses, and real-time streaming systems that power AI products and analytics at scale.', skills:['Apache Spark','dbt','Airflow','Kafka','Snowflake','Databricks'], color:'#F7941D', accent:'#29ABE2' },
   { id:'software', tag:'Engineering', title:'Software Engineering', desc:'Scaling high-availability backend and frontend systems for global fintechs, SaaS platforms, and AI-native companies.', skills:['NodeJS','React','Go','Rust','Postgres'], color:'#29ABE2', accent:'#6B4C9A' },
   { id:'cloud', tag:'Engineering', title:'Cloud Architecture', desc:'Architecting the infrastructure backbone for APAC and US data centres — resilient, scalable, cost-optimised.', skills:['AWS','Azure','GCP','Kubernetes','Terraform'], color:'#6B4C9A', accent:'#29ABE2' },
 ]
@@ -230,7 +231,19 @@ export default function Home() {
     <>
       <Head>
         <title>RECRUITABLE | Explore, Connect and Get Hired — KL · NYC · LON</title>
-        <meta name="description" content="Specialist recruitment for AI, LLM Engineering, Data Science, MLOps, and Software Engineering across APAC. Pre-vetted top 5% talent. Hire in under 7 days."/>
+        <meta name="description" content="Specialist recruitment for AI, LLM Engineering, Data Engineering, Data Science, MLOps, and Software Engineering across APAC, Europe and the US. Pre-vetted top 5% talent. Hire in under 7 days."/>
+        <meta property="og:title" content="RECRUITABLE — Top 5% AI & Engineering Talent | KL · NYC · LON"/>
+        <meta property="og:description" content="Specialist recruitment for AI Engineers, Data Engineers, LLM Engineers, and Forward Deployment Engineers across APAC, Europe, and the US. Pre-vetted top 5% only. Hire in under 7 days."/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://recruitable.asia"/>
+        <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
+        <meta property="og:image:width" content="1200"/>
+        <meta property="og:image:height" content="630"/>
+        <meta property="og:site_name" content="Recruitable"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="RECRUITABLE — Top 5% AI & Engineering Talent"/>
+        <meta name="twitter:description" content="Pre-vetted AI Engineers, Data Engineers, LLM Engineers, and Forward Deployment Engineers across APAC, Europe, and the US."/>
+        <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
       </Head>
       <style>{CSS}</style>
 
@@ -408,6 +421,7 @@ export default function Home() {
                       <option>LLM Engineering</option>
                       <option>Data Science / AI</option>
                       <option>MLOps</option>
+                      <option>Data Engineering</option>
                       <option>Software Engineering</option>
                       <option>Cloud Architecture</option>
                       <option>Multiple / Not sure</option>
