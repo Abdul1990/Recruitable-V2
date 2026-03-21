@@ -1,0 +1,4 @@
+/* Global reset — all design tokens and component styles are in components/Layout.js */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
