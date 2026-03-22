@@ -1,0 +1,149 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    // Is the request from a signed-in user?
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Is the request from the user who owns this document?
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Does the incoming data contain only the specified fields?
+    function hasOnly(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // Is the value a non-empty string under maxLen characters?
+    function isShortString(value, maxLen) {
+      return value is string && value.size() > 0 && value.size() <= maxLen;
+    }
+
+    // ── /users/{uid} ─────────────────────────────────────────────────────────
+    // Users can read and write their own profile only.
+    // displayName, photoURL, specialism, topSkills, summary, cvImageURL, location.
+    // Sensitive fields (email, phone) are never stored here — enforced by field rules.
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+
+      allow create: if isOwner(uid)
+        && hasOnly([
+            'displayName', 'photoURL', 'specialism', 'specialismTitle',
+            'topSkills', 'summary', 'cvImageURL', 'location',
+            'linkedInPositions', 'createdAt', 'updatedAt'
+           ])
+        && isShortString(request.resource.data.displayName, 120)
+        && request.resource.data.topSkills is list
+        && request.resource.data.topSkills.size() <= 5;
+
+      allow update: if isOwner(uid)
+        // Never allow client to store email or phone number fields
+        && !('email' in request.resource.data)
+        && !('phone' in request.resource.data)
+        && !('emailAddress' in request.resource.data)
+        && !('phoneNumber' in request.resource.data)
+        && request.resource.data.topSkills is list
+        && request.resource.data.topSkills.size() <= 5;
+
+      allow delete: if isOwner(uid);
+    }
+
+    // ── /jobs/{jobId} ────────────────────────────────────────────────────────
+    // Jobs are public-read (any authenticated user can browse).
+    // Only server-side Admin SDK can write (via ATS sync and manual entry).
+
+    match /jobs/{jobId} {
+      allow read: if isSignedIn();
+      allow write: if false; // Admin SDK only — written by /api/ats/sync
+    }
+
+    // ── /ats_connections/{connectionId} ──────────────────────────────────────
+    // Client companies manage their own ATS connections.
+    // The webhook secret and API key hash are write-once (set by Admin SDK on creation).
+    // Clients can read their own connections and update non-sensitive fields.
+
+    match /ats_connections/{connectionId} {
+      // Client can read their own connection
+      allow read: if isSignedIn()
+        && resource.data.clientId == request.auth.uid;
+
+      // Clients cannot write directly — all writes go through the API routes
+      // which use the Admin SDK. This prevents clients from spoofing status
+      // or altering webhook secrets.
+      allow write: if false;
+    }
+
+    // ── /ats_sync_logs/{logId} ───────────────────────────────────────────────
+    // Sync logs are read-only for the client that owns the connection.
+    // Written exclusively by the Admin SDK via /api/ats/sync.
+
+    match /ats_sync_logs/{logId} {
+      allow read: if isSignedIn()
+        && exists(/databases/$(database)/documents/ats_connections/$(resource.data.connectionId))
+        && get(/databases/$(database)/documents/ats_connections/$(resource.data.connectionId)).data.clientId == request.auth.uid;
+
+      allow write: if false; // Admin SDK only
+    }
+
+    // ── /swipes/{uid}/decisions/{jobId} ──────────────────────────────────────
+    // A user can read and write their own swipe decisions only.
+
+    match /swipes/{uid}/decisions/{jobId} {
+      allow read: if isOwner(uid);
+
+      allow create, update: if isOwner(uid)
+        && hasOnly(['jobId', 'direction', 'matchScore', 'matchReason', 'decidedAt'])
+        && request.resource.data.direction in ['right', 'left']
+        && request.resource.data.matchScore is int
+        && request.resource.data.matchScore >= 0
+        && request.resource.data.matchScore <= 100;
+
+      allow delete: if false; // Swipes are immutable once recorded
+    }
+
+    // ── /matches/{matchId} ───────────────────────────────────────────────────
+    // A match document is readable by the candidate named in it.
+    // Matches are created and managed by the backend (Admin SDK).
+    // Candidates may update hasUnreadMessages only (mark as read).
+
+    match /matches/{matchId} {
+      allow read: if isSignedIn()
+        && resource.data.candidateId == request.auth.uid;
+
+      allow update: if isSignedIn()
+        && resource.data.candidateId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['hasUnreadMessages']);
+
+      allow create, delete: if false; // Admin SDK only
+    }
+
+    // ── /messages/{matchId}/thread/{msgId} ───────────────────────────────────
+    // Messages are readable and writable only by participants of the match.
+
+    match /messages/{matchId}/thread/{msgId} {
+      // Must be the candidate on the parent match to read messages
+      allow read: if isSignedIn()
+        && exists(/databases/$(database)/documents/matches/$(matchId))
+        && get(/databases/$(database)/documents/matches/$(matchId)).data.candidateId == request.auth.uid;
+
+      // Can send a message only if you are the candidate on this match
+      allow create: if isSignedIn()
+        && exists(/databases/$(database)/documents/matches/$(matchId))
+        && get(/databases/$(database)/documents/matches/$(matchId)).data.candidateId == request.auth.uid
+        && hasOnly(['matchId', 'senderId', 'text', 'sentAt', 'isRead'])
+        && request.resource.data.senderId == request.auth.uid
+        && isShortString(request.resource.data.text, 2000)
+        && request.resource.data.matchId == matchId;
+
+      allow update, delete: if false; // Messages are immutable once sent
+    }
+
+  }
+}
