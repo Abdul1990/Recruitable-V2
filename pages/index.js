@@ -358,7 +358,7 @@ export default function Home() {
         <div className="si">
           <div className="eyebrow" style={{color:'#03A9F4'}}><span className="eyebrow-bar" style={{background:'#03A9F4'}}/>Global Hubs</div>
           <h2 className="section-h2">Where we <span className="c-cyan">operate</span></h2>
-          <p className="section-desc">Three anchor points, one mission. Kuala Lumpur is our talent engine — New York and London are where we place them.</p>
+
           <div className="hubs-grid">
             {HUBS.map(hub=>(
               <Link key={hub.city} href={`/jobs?region=${hub.region}`} className="hub-card">
