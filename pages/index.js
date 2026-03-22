@@ -38,9 +38,30 @@ const HUBS = [
 ]
 
 const INSIGHTS = [
-  { label:'Market Shift', tag:'AI Roles', color:'#E91E63', title:'Forward Deployment Engineers: The $400K hire nobody trained for', desc:'AI companies are discovering that selling a product is easy — deploying it inside a Fortune 500 is not. We break down the anatomy of this emerging role.' },
-  { label:'APAC Report', tag:'Talent Market', color:'#03A9F4', title:'Why Malaysia is winning the APAC AI talent war', desc:'English fluency, world-class STEM output, and cost arbitrage is making KL the preferred hiring hub for global AI companies.' },
-  { label:'Hiring Guide', tag:'Process', color:'#3F51B5', title:'The top 5% filter: How we screen LLM engineers differently', desc:'Our vetting protocol is built around live system design, production artefact review, and domain depth interviews — not keyword matching.' },
+  {
+    label: 'US Market Report',
+    tag: 'AI Tech Roles',
+    color: '#E91E63',
+    title: 'The AI talent squeeze: 73% of US hiring managers cannot fill their AI roles',
+    desc: 'Demand for AI engineers in the US has grown 4× faster than supply since GPT-4\'s release. Median total comp for LLM infrastructure roles now sits at $285K in SF and $240K in NYC — yet roles stay open for an average of 94 days. The bottleneck is not budget. It is pipeline. Companies chasing the same 12,000 US-based LLM engineers with 3+ years of production experience are losing to global talent strategies. Roles in highest demand right now: AI Platform Engineer, ML Inference Specialist, RAG Systems Architect, and Prompt/Evaluation Engineer.',
+    stats: ['Median LLM Engineer comp: $285K (SF)', 'Avg. time-to-fill AI roles: 94 days', '4× demand growth vs supply since 2023'],
+  },
+  {
+    label: 'KL Talent Market',
+    tag: 'Software Engineering',
+    color: '#03A9F4',
+    title: 'Kuala Lumpur\'s software engineering moment: why FAANG keeps coming back',
+    desc: 'Google, AWS, ByteDance, and Grab have all expanded engineering headcount in KL over the past 18 months — and it is not just cost arbitrage. Malaysia produces 70,000+ STEM graduates annually, boasts 98% English proficiency among engineers, and sits in GMT+8 — a clean overlap with both Singapore and Sydney. Median software engineering salaries in KL range from MYR 8,000–22,000/month for senior IC roles, a fraction of equivalent Singapore talent. The result: global companies are building real product teams here, not just support functions. Most in-demand stacks right now are Go, Kotlin, React, and Terraform.',
+    stats: ['70,000+ STEM grads/year', 'Senior IC salaries: MYR 8K–22K/month', 'GMT+8 — ideal APAC timezone anchor'],
+  },
+  {
+    label: 'Role Spotlight',
+    tag: 'Future of Engineering',
+    color: '#3F51B5',
+    title: 'Forward Deployment Engineers are the most important hire in AI — and nobody is training for it',
+    desc: 'The hardest part of the AI era is not building the model. It is deploying it inside a legacy enterprise. Forward Deployment Engineers (FDEs) are the bridge: equal parts software engineer, solutions architect, and change management consultant. Pioneered by Palantir and Anduril, the role is now spreading fast across AI-native companies selling into government, healthcare, and financial services. FDEs earn $350K–$500K+ total comp at leading AI companies. They need production coding ability, client-facing communication, and the emotional intelligence to navigate organisational politics — a combination that is extraordinarily rare. If you are an engineer who can also present to a C-suite, your market value just tripled.',
+    stats: ['Total comp: $350K–$500K+ at top AI cos', 'Role growth: 210% YoY across AI-native firms', 'Rarest profile: eng + consulting + EQ'],
+  },
 ]
 
 const RADAR_DATA = [
@@ -208,8 +229,11 @@ export default function Home() {
     .icard-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-family:'Nunito',sans-serif}
     .icard-tag{font-size:10px;font-weight:700;padding:4px 10px;border-radius:10px;background:var(--off2);color:var(--dark-l);font-family:'Nunito',sans-serif}
     .icard h3{font-size:17px;font-weight:800;line-height:1.35;margin-bottom:10px;color:var(--dark);font-family:'Nunito',sans-serif}
-    .icard p{font-size:14px;color:var(--muted);line-height:1.65;flex:1;margin-bottom:22px}
-    .icard-link{font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:5px;font-family:'Nunito',sans-serif}
+    .icard p{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:18px}
+    .icard-stats{list-style:none;padding:0;margin:0 0 22px;display:flex;flex-direction:column;gap:7px;flex:1}
+    .icard-stats li{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--dark-l);font-family:'Nunito',sans-serif;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--off)}
+    .icard-stat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+    .icard-link{font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:5px;font-family:'Nunito',sans-serif;margin-top:auto}
     .contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:72px;align-items:start}
     .email-block{margin:28px 0;padding:22px;background:var(--off);border-radius:14px;border:1.5px solid var(--border)}
     .email-lbl{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;font-family:'Nunito',sans-serif}
@@ -368,8 +392,14 @@ export default function Home() {
               <div key={ins.title} className="icard">
                 <div className="icard-stripe" style={{background:ins.color}}/>
                 <div className="icard-meta"><span className="icard-lbl">{ins.label}</span><span className="icard-tag">{ins.tag}</span></div>
-                <h3>{ins.title}</h3><p>{ins.desc}</p>
-                <a href="#contact" className="icard-link" style={{color:ins.color}}>Read more →</a>
+                <h3>{ins.title}</h3>
+                <p>{ins.desc}</p>
+                {ins.stats && (
+                  <ul className="icard-stats">
+                    {ins.stats.map(s => <li key={s} style={{borderColor:ins.color+'40'}}><span className="icard-stat-dot" style={{background:ins.color}}/>{s}</li>)}
+                  </ul>
+                )}
+                <a href="#contact" className="icard-link" style={{color:ins.color}}>Talk to our team →</a>
               </div>
             ))}
           </div>
