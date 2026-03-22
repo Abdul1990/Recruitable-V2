@@ -281,8 +281,36 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>RECRUITABLE | Explore, Connect and Get Hired — KL · US · LON</title>
-        <meta name="description" content="Specialist recruitment for AI, LLM Engineering, Data Science, MLOps, and Software Engineering across APAC. Pre-vetted top 5% talent. Hire in under 30 days."/>
+        <title>Recruitable | AI & Tech Recruitment — KL · US · London</title>
+        <meta name="description" content="Specialist recruitment for AI Engineers, LLM Engineers, Data Scientists, MLOps, and Software Engineers across APAC, US, and Europe. Pre-vetted top 5% talent. Hire in under 30 days."/>
+        <meta name="keywords" content="AI recruitment, tech recruitment, LLM engineer jobs, data scientist jobs, software engineer Malaysia, AI jobs Kuala Lumpur, forward deployment engineer, MLOps recruitment, APAC tech talent, AI headhunter"/>
+        <meta name="robots" content="index, follow"/>
+        <link rel="canonical" href="https://recruitable.asia"/>
+        {/* Open Graph */}
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://recruitable.asia"/>
+        <meta property="og:site_name" content="Recruitable"/>
+        <meta property="og:title" content="Recruitable | AI & Tech Recruitment — KL · US · London"/>
+        <meta property="og:description" content="Specialist recruitment for AI Engineers, LLM Engineers, Data Scientists, and Software Engineers across APAC, US, and Europe. Pre-vetted top 5% talent."/>
+        <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="Recruitable | AI & Tech Recruitment — KL · US · London"/>
+        <meta name="twitter:description" content="Specialist recruitment for AI, LLM Engineering, Data Science, and Software Engineering across APAC, US, and Europe."/>
+        <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
+        {/* JSON-LD Structured Data */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Recruitable",
+          "url": "https://recruitable.asia",
+          "logo": "https://recruitable.asia/og-image.png",
+          "description": "Specialist AI and tech recruitment agency placing top 5% engineers across APAC, US, and Europe.",
+          "email": "info@recruitable.asia",
+          "areaServed": ["MY", "US", "GB"],
+          "sameAs": [],
+          "knowsAbout": ["AI Engineering", "LLM Engineering", "Data Science", "MLOps", "Software Engineering", "Forward Deployment Engineering"]
+        })}}/>
       </Head>
       <style>{CSS}</style>
 
@@ -396,7 +424,6 @@ export default function Home() {
         <div className="si">
           <div className="eyebrow" style={{color:'#3F51B5'}}><span className="eyebrow-bar" style={{background:'#3F51B5'}}/>Market Insights</div>
           <h2 className="section-h2">Intelligence from the <span className="c-purple">front line</span></h2>
-          <p className="section-desc">We publish what we see — not what sounds good. Candid market intelligence from active placements across APAC, US, and Europe.</p>
           <div className="insights-grid">
             {INSIGHTS.map(ins=>(
               <div key={ins.title} className="icard">
@@ -423,7 +450,6 @@ export default function Home() {
             <div>
               <div className="eyebrow" style={{color:'#E91E63'}}><span className="eyebrow-bar" style={{background:'#E91E63'}}/>Get in Touch</div>
               <h2 className="section-h2">Let&apos;s find your <span className="c-pink">next hire</span></h2>
-              <p style={{fontSize:16,color:'var(--muted)',lineHeight:1.7,marginBottom:8}}>Whether you need one specialist or an entire AI team, we work on retained and contingency mandates. Most searches are active within 48 hours.</p>
               <div className="email-block">
                 <div className="email-lbl">Email us directly</div>
                 <div className="email-val"><a href="mailto:info@recruitable.asia">info@recruitable.asia</a></div>
