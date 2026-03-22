@@ -421,7 +421,7 @@ export default function Home() {
               <div className="cmeta">
                 <div className="cmeta-item"><div className="cmeta-icon">◎</div><div><div className="cmeta-lbl">Global Hubs</div><div className="cmeta-val">Kuala Lumpur · United States · London</div></div></div>
                 <div className="cmeta-item"><div className="cmeta-icon">◷</div><div><div className="cmeta-lbl">Response Time</div><div className="cmeta-val">Within 4 business hours</div></div></div>
-                <div className="cmeta-item"><div className="cmeta-icon">↗</div><div><div className="cmeta-lbl">Typical Time-to-Hire</div><div className="cmeta-val" style={{color:'#E91E8C'}}>Under 7 days</div></div></div>
+                <div className="cmeta-item"><div className="cmeta-icon">↗</div><div><div className="cmeta-lbl">Typical Time-to-Hire</div><div className="cmeta-val" style={{color:'#E91E8C'}}>Under 30 days</div></div></div>
               </div>
             </div>
             <div className="form-card">
