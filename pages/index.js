@@ -167,6 +167,14 @@ export default function Home() {
     .radar-card{background:white;border:1.5px solid var(--border);border-radius:24px;padding:28px 24px;box-shadow:0 8px 40px rgba(45,45,58,0.07)}
     .radar-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:16px;text-align:center;font-family:'Nunito',sans-serif}
     .radar-legend{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+    .radar-legend-item{display:flex;align-items:center;gap:8px}
+    .radar-hero-block{display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:center;margin-top:48px;background:white;border:1.5px solid var(--border);border-radius:24px;padding:28px 32px;box-shadow:0 8px 40px rgba(45,45,58,0.07);text-align:left}
+    .radar-hero-chart{border-right:1px solid var(--border);padding-right:32px}
+    .radar-hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .rstat{padding:16px 18px;background:var(--off);border-radius:14px;border:1px solid var(--border)}
+    .rstat-val{font-size:26px;font-weight:900;line-height:1;margin-bottom:4px;font-family:'Nunito',sans-serif}
+    .rstat-lbl{font-size:13px;font-weight:800;color:var(--dark);margin-bottom:3px;font-family:'Nunito',sans-serif}
+    .rstat-sub{font-size:11px;color:var(--muted);line-height:1.4;font-family:'Nunito',sans-serif}
     .rl-item{display:flex;align-items:center;justify-content:space-between;font-size:12px}
     .rl-label{color:var(--dark);display:flex;align-items:center;gap:8px;font-weight:500}
     .rl-bar-bg{width:70px;height:4px;background:var(--off2);border-radius:2px;overflow:hidden}
@@ -258,7 +266,7 @@ export default function Home() {
     .form-ok h3{font-size:22px;font-weight:800;color:var(--dark);margin-bottom:10px;font-family:'Nunito',sans-serif}
     .form-ok p{color:var(--muted);line-height:1.6}
     @media(max-width:960px){
-      .hero-inner{grid-template-columns:1fr}.radar-card{display:none}
+      .hero-inner{grid-template-columns:1fr}.radar-card{display:none}.radar-hero-block{grid-template-columns:1fr;gap:24px}.radar-hero-chart{border-right:none;padding-right:0;border-bottom:1px solid var(--border);padding-bottom:24px}
       .hubs-grid{grid-template-columns:1fr}.insights-grid{grid-template-columns:1fr}
       .contact-grid{grid-template-columns:1fr;gap:48px}
       .dcard.feat .dcard-inner{grid-template-columns:1fr}
@@ -274,7 +282,7 @@ export default function Home() {
     <>
       <Head>
         <title>RECRUITABLE | Explore, Connect and Get Hired — KL · US · LON</title>
-        <meta name="description" content="Specialist recruitment for AI, LLM Engineering, Data Science, MLOps, and Software Engineering across APAC. Pre-vetted top 5% talent. Hire in under 7 days."/>
+        <meta name="description" content="Specialist recruitment for AI, LLM Engineering, Data Science, MLOps, and Software Engineering across APAC. Pre-vetted top 5% talent. Hire in under 30 days."/>
       </Head>
       <style>{CSS}</style>
 
@@ -296,24 +304,26 @@ export default function Home() {
               <a href="#domains" className="btn-outline">Our Specialisations</a>
             </div>
 
-            <div style={{marginTop:48,marginBottom:40}}>
-              <p className="fl" style={{marginBottom:16,opacity:0.6}}>Candidate Benchmarks by Role</p>
-              <div style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
-                {RADAR_DATA.map(d=>(
-                  <div key={d.label} style={{background:'white',padding:'8px 16px',borderRadius:12,border:'1px solid var(--border)',display:'flex',alignItems:'center',gap:8}}>
-                    <span style={{width:8,height:8,borderRadius:'50%',background:d.color}}/>
-                    <span style={{fontSize:13,fontWeight:700,color:'var(--dark)'}}>{d.label}</span>
-                    <span style={{fontSize:13,fontWeight:800,color:d.color}}>{d.val}%</span>
-                  </div>
-                ))}
+            <div className="radar-hero-block">
+              <div className="radar-hero-chart">
+                <div className="radar-title">Candidate Benchmarks by Role</div>
+                <RadarChart/>
+                <div className="radar-legend">
+                  {RADAR_DATA.map(d=>(
+                    <div key={d.label} className="radar-legend-item">
+                      <span style={{width:8,height:8,borderRadius:'50%',background:d.color,flexShrink:0}}/>
+                      <span style={{fontSize:12,fontWeight:700,color:'var(--dark-l)',flex:1}}>{d.label}</span>
+                      <span style={{fontSize:12,fontWeight:800,color:d.color}}>{d.val}%</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            
-            <div className="hero-stats" style={{marginTop:40,paddingTop:40,borderTop:'1px solid var(--border)'}}>
-              <div className="hero-stat"><div className="stat-val c-pink">&lt; 7</div><div className="stat-lbl">Days to place</div></div>
-              <div className="hero-stat"><div className="stat-val c-cyan">Top 5%</div><div className="stat-lbl">Vetted Only</div></div>
-              <div className="hero-stat"><div className="stat-val c-purple">95%</div><div className="stat-lbl">Software Bench</div></div>
-              <div className="hero-stat"><div className="stat-val c-orange">100%</div><div className="stat-lbl">Fintech Ready</div></div>
+              <div className="radar-hero-stats">
+                <div className="rstat"><div className="rstat-val c-pink">&lt;30</div><div className="rstat-lbl">Days to Place</div><div className="rstat-sub">Multi-stage technical process</div></div>
+                <div className="rstat"><div className="rstat-val c-cyan">Top 5%</div><div className="rstat-lbl">Vetted Only</div><div className="rstat-sub">Live system design &amp; depth review</div></div>
+                <div className="rstat"><div className="rstat-val c-purple">95%</div><div className="rstat-lbl">Software Bench</div><div className="rstat-sub">Retained candidate quality score</div></div>
+                <div className="rstat"><div className="rstat-val c-orange">100%</div><div className="rstat-lbl">Fintech Ready</div><div className="rstat-sub">Domain-tested, production-proven</div></div>
+              </div>
             </div>
           </div>
         </div>
