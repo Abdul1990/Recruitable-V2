@@ -4,6 +4,10 @@
     {
       "path": "/api/ats/sync-all",
       "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/interviews/remind",
+      "schedule": "*/30 * * * *"
     }
   ]
 }

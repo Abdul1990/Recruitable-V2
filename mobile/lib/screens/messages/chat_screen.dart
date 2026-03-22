@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
+import '../../models/interview.dart';
 import '../../models/match.dart';
 import '../../models/message.dart';
 import '../../services/auth_service.dart';
 import '../../services/firestore_service.dart';
+import '../../services/interview_service.dart';
+import '../interviews/book_interview_screen.dart';
+import '../interviews/interview_card.dart';
 
 class ChatScreen extends StatefulWidget {
   final Match match;
@@ -93,7 +97,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         actions: [
           Container(
-            margin: const EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.only(right: 8),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: const Color(0xFFE3F2FD),
@@ -107,10 +111,30 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
           ),
+          // Book interview button — visible to recruiter side
+          IconButton(
+            icon: const Icon(Icons.event_available_outlined, color: Color(0xFFE91E63)),
+            tooltip: 'Book interview',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BookInterviewScreen(match: widget.match),
+              ),
+            ),
+          ),
         ],
       ),
       body: Column(
         children: [
+          // Interview card — shown at the top of the chat when one exists
+          StreamBuilder<Interview?>(
+            stream: InterviewService.instance.watchMatchInterview(widget.match.id),
+            builder: (context, snapshot) {
+              final interview = snapshot.data;
+              if (interview == null) return const SizedBox.shrink();
+              return InterviewCard(interview: interview);
+            },
+          ),
+
           // Chat list
           Expanded(
             child: StreamBuilder<List<Message>>(

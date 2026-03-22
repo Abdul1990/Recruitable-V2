@@ -43,6 +43,10 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.3.2
 
+  # Interviews
+  url_launcher: ^6.3.1        # Open Zoom / Google Meet links
+  intl: ^0.19.0               # Date formatting (already listed above, one entry only)
+
   # UI
   google_fonts: ^6.2.1
   shimmer: ^3.0.0

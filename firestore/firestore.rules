@@ -64,6 +64,26 @@ service cloud.firestore {
       allow write: if false; // Admin SDK only — written by /api/ats/sync
     }
 
+    // ── /interviews/{interviewId} ────────────────────────────────────────────
+    // Interviews are created by the Admin SDK (recruiter books via API).
+    // Candidates can read their own interviews and update status (accept/decline).
+
+    match /interviews/{interviewId} {
+      // Candidate can read their own interview
+      allow read: if isSignedIn()
+        && resource.data.candidateId == request.auth.uid;
+
+      // Candidate can only flip status from pending → accepted/declined
+      // All other writes go through Admin SDK
+      allow update: if isSignedIn()
+        && resource.data.candidateId == request.auth.uid
+        && resource.data.status == 'pending'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
+        && request.resource.data.status in ['accepted', 'declined'];
+
+      allow create, delete: if false; // Admin SDK only
+    }
+
     // ── /ats_connections/{connectionId} ──────────────────────────────────────
     // Client companies manage their own ATS connections.
     // The webhook secret and API key hash are write-once (set by Admin SDK on creation).
