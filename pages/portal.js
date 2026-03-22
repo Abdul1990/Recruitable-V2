@@ -24,10 +24,10 @@ const SCAN_STEPS = [
 ]
 
 const MATCH_STATS = [
-  { icon: Users, label: 'Candidates Identified', value: '12', color: '#E8235A' },
-  { icon: Star, label: 'Top 5% Qualified', value: '12 / 12', color: '#F5A623' },
-  { icon: Clock, label: 'Est. Shortlist Delivery', value: '< 7 days', color: '#29B6D8' },
-  { icon: Globe, label: 'Regions Covered', value: 'KL · NYC · LON', color: '#5B4B8A' },
+  { icon: Users, label: 'Candidates Identified', value: '12', color: '#E91E63' },
+  { icon: Star, label: 'Top 5% Qualified', value: '12 / 12', color: '#FF9400' },
+  { icon: Clock, label: 'Est. Shortlist Delivery', value: '< 7 days', color: '#03A9F4' },
+  { icon: Globe, label: 'Regions Covered', value: 'KL · NYC · LON', color: '#3F51B5' },
 ]
 
 const TRUST_BADGES = [
@@ -47,7 +47,7 @@ function ScanProgress({ steps, currentStep }) {
         return (
           <div key={i} className={`scan-step ${done ? 'done' : active ? 'active' : 'pending'}`}>
             <div className="scan-step-indicator">
-              {done ? <CheckCircle size={16} color="#29B6D8" /> : (
+              {done ? <CheckCircle size={16} color="#03A9F4" /> : (
                 <div className={`scan-dot ${active ? 'pulse' : ''}`} />
               )}
             </div>
@@ -460,7 +460,7 @@ export default function Portal() {
                     <X size={15} /> Analyse a Different JD
                   </button>
                   <div className="result-disclaimer">
-                    No commitment required. We'll send anonymised profile summaries within 4 hours.
+                    No commitment required. We&apos;ll send anonymised profile summaries within 4 hours.
                   </div>
                 </div>
               </>

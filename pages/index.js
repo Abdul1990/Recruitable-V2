@@ -1,35 +1,53 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
 
-// Brand colors from logo: Pink #E91E8C | Orange #F7941D | Cyan #29ABE2 | Purple #6B4C9A | Yellow #FFC107 | Dark #2D2D44
+// Brand colors from logo: Pink #E91E63 | Orange #FF9400 | Cyan #03A9F4 | Purple #3F51B5 | Yellow #FFC107 | Dark #212121
 // Background: White | Tagline: "Explore, connect and get hired"
 
 const DOMAINS = [
-  { id:'forward', tag:'Bridge Role', title:'Forward Deployment Engineering', desc:'The rarest hybrid in AI: engineers who implement complex AI products directly into client infrastructure. Equal parts field engineer, solutions architect, and AI practitioner — the critical gap between selling AI and deploying it.', skills:['Full-Stack Dev','Cloud Infra','Field DevOps','LLM Integration','Customer Success','Enterprise SaaS'], color:'#E91E8C', accent:'#F7941D', highlight:true },
-  { id:'llm', tag:'AI/ML', title:'LLM Engineering', desc:'Fine-tuning foundational models and architecting RAG-based enterprise agents that move beyond demo into production.', skills:['LangChain','PyTorch','RAG','Prompt Eng.','RLHF'], color:'#29ABE2', accent:'#6B4C9A' },
-  { id:'datascience', tag:'AI/ML', title:'Data Science & AI', desc:'Building predictive models that transform complex raw data into reliable business intelligence at scale.', skills:['Python','Scikit-Learn','SQL','Spark','Statistical Modelling'], color:'#6B4C9A', accent:'#E91E8C' },
-  { id:'mlops', tag:'AI/ML', title:'MLOps', desc:'Automating the full lifecycle of high-concurrency model deployment — from experiment to production SLA.', skills:['Kubeflow','SageMaker','Docker','CI/CD','Monitoring'], color:'#F7941D', accent:'#FFC107' },
-  { id:'software', tag:'Engineering', title:'Software Engineering', desc:'Scaling high-availability backend and frontend systems for global fintechs, SaaS platforms, and AI-native companies.', skills:['NodeJS','React','Go','Rust','Postgres'], color:'#29ABE2', accent:'#6B4C9A' },
-  { id:'cloud', tag:'Engineering', title:'Cloud Architecture', desc:'Architecting the infrastructure backbone for APAC and US data centres — resilient, scalable, cost-optimised.', skills:['AWS','Azure','GCP','Kubernetes','Terraform'], color:'#6B4C9A', accent:'#29ABE2' },
+  // AI & ML
+  { id:'ai-eng', cat:'AI & ML', title:'AI Engineer', desc:'Developing cutting edge AI models and integrating them into production-ready environments.', skills:['Python','PyTorch','LLMs','RAG'], color:'#E91E63', accent:'#FF9400' },
+  { id:'ai-prod-eng', cat:'AI & ML', title:'AI Product Engineer', desc:'Bridging the gap between AI research and user-facing product features.', skills:['LangChain','Next.js','Prompt Eng.'], color:'#03A9F4', accent:'#3F51B5' },
+  { id:'sol-eng', cat:'AI & ML', title:'Solution Engineer', desc:'Architecting complex technical solutions for enterprise AI integrations.', skills:['Sales Engineering','Solutions Arch.'], color:'#3F51B5', accent:'#E91E63' },
+  { id:'fwd-deploy', cat:'AI & ML', title:'Forward Deployment Engineer', desc:'Executing high-impact AI deployments directly within client infrastructure.', skills:['DevOps','Field Eng.','SaaS'], color:'#FF9400', accent:'#FFC107', highlight:true },
+  { id:'ai-pm', cat:'AI & ML', title:'AI Product Manager', desc:'Leading the strategy and roadmap for AI-native product ecosystems.', skills:['Prod Management','AI Strategy'], color:'#03A9F4', accent:'#3F51B5' },
+  
+  // Software Engineering
+  { id:'backend', cat:'Software Engineering', title:'Back-end Development', desc:'Scaling robust server-side architectures for high-concurrency systems.', skills:['NodeJS','Go','Rust','Postgres'], color:'#E91E63', accent:'#03A9F4' },
+  { id:'fullstack', cat:'Software Engineering', title:'Full Stack Development', desc:'End-to-end product delivery across modern web and mobile stacks.', skills:['React','Next.js','TypeScript'], color:'#03A9F4', accent:'#3F51B5' },
+  { id:'frontend', cat:'Software Engineering', title:'Front End Development', desc:'Crafting pixel-perfect, high-performance user interfaces.', skills:['React','Vue','TailwindCSS'], color:'#3F51B5', accent:'#00BCD4' },
+  { id:'mobile', cat:'Software Engineering', title:'Mobile Development', desc:'Building native and cross-platform mobile experiences for scale.', skills:['Kotlin','Flutter','Swift'], color:'#FF9400', accent:'#FFC107' },
+  { id:'eng-mgr', cat:'Software Engineering', title:'Engineering Manager', desc:'Leading and scaling high-performing technical teams and culture.', skills:['Leadership','Agile','Mentorship'], color:'#00BCD4', accent:'#3F51B5' },
+
+  // Data
+  { id:'ml-eng', cat:'Data', title:'ML Engineering', desc:'Productionizing ML models with scalable infrastructure and MLOps.', skills:['Kubeflow','SageMaker','Docker'], color:'#E91E63', accent:'#3F51B5' },
+  { id:'data-eng', cat:'Data', title:'Data Engineering', desc:'Architecting data pipelines and warehouses for large-scale intelligence.', skills:['Spark','Snowflake','SQL','etl'], color:'#03A9F4', accent:'#FF9400' },
+  { id:'data-sci', cat:'Data', title:'Data Scientist', desc:'Extracting actionable insights from complex datasets via statistical modelling.', skills:['Python','Stats','Pandas'], color:'#3F51B5', accent:'#E91E63' },
+
+  // Product
+  { id:'prod-mgr', cat:'Product', title:'Product Manager', desc:'Driving user-centric product discovery and execution.', skills:['Agile','UI/UX','Roadmapping'], color:'#FF9400', accent:'#3F51B5' },
+  { id:'prod-des', cat:'Product', title:'Product Designer', desc:'Designing intuitive and beautiful user experiences for complex software.', skills:['Figma','Design Systems'], color:'#03A9F4', accent:'#E91E63' },
+  { id:'prod-eng', cat:'Product', title:'Product Engineering', desc:'Highly technical product leaders who code and lead features.', skills:['MVP','Full-stack','Tech Lead'], color:'#E91E63', accent:'#03A9F4' },
 ]
 
 const HUBS = [
-  { city:'Kuala Lumpur', code:'KL', role:'Engine Room', desc:'Our operational headquarters and primary talent pipeline. Home to the largest concentration of vetted AI and engineering talent in Southeast Asia.', stats:[{label:'Talent Pool',val:'8,400+'},{label:'Avg. Fill Time',val:'< 7 days'}], primary:true, color:'#E91E8C' },
-  { city:'New York City', code:'NYC', role:'Strategic Frontier', desc:"Bridging top-tier APAC talent to the world's most competitive AI and fintech companies on the US East Coast.", stats:[{label:'US Clients',val:'35+'},{label:'Time Zone',val:'ET'}], primary:false, color:'#29ABE2' },
-  { city:'London', code:'LON', role:'Strategic Frontier', desc:'Connecting European scale-ups and global enterprises with pre-vetted specialists across the APAC region.', stats:[{label:'EU Clients',val:'20+'},{label:'Time Zone',val:'GMT'}], primary:false, color:'#6B4C9A' },
+  { city:'Kuala Lumpur', code:'KL', role:'Engine Room', desc:'Our operational headquarters and primary talent pipeline. Home to the largest concentration of vetted AI and engineering talent in Southeast Asia.', stats:[{label:'Talent Pool',val:'8,400+'},{label:'Avg. Fill Time',val:'< 7 days'}], primary:true, color:'#E91E63', region:'KL' },
+  { city:'United States', code:'US', role:'Strategic Frontier', desc:"Placing top-tier APAC talent into the world's most competitive AI and fintech companies across New York, San Francisco, and beyond.", stats:[{label:'US Clients',val:'35+'},{label:'Time Zone',val:'ET/PT'}], primary:false, color:'#03A9F4', region:'US' },
+  { city:'London', code:'LON', role:'Strategic Frontier', desc:'Connecting European scale-ups and global enterprises with pre-vetted specialists across the APAC region.', stats:[{label:'EU Clients',val:'20+'},{label:'Time Zone',val:'GMT'}], primary:false, color:'#3F51B5', region:'London' },
 ]
 
 const INSIGHTS = [
-  { label:'Market Shift', tag:'AI Roles', color:'#E91E8C', title:'Forward Deployment Engineers: The $400K hire nobody trained for', desc:'AI companies are discovering that selling a product is easy — deploying it inside a Fortune 500 is not. We break down the anatomy of this emerging role.' },
-  { label:'APAC Report', tag:'Talent Market', color:'#29ABE2', title:'Why Malaysia is winning the APAC AI talent war', desc:'English fluency, world-class STEM output, and cost arbitrage is making KL the preferred hiring hub for global AI companies.' },
-  { label:'Hiring Guide', tag:'Process', color:'#6B4C9A', title:'The top 5% filter: How we screen LLM engineers differently', desc:'Our vetting protocol is built around live system design, production artefact review, and domain depth interviews — not keyword matching.' },
+  { label:'Market Shift', tag:'AI Roles', color:'#E91E63', title:'Forward Deployment Engineers: The $400K hire nobody trained for', desc:'AI companies are discovering that selling a product is easy — deploying it inside a Fortune 500 is not. We break down the anatomy of this emerging role.' },
+  { label:'APAC Report', tag:'Talent Market', color:'#03A9F4', title:'Why Malaysia is winning the APAC AI talent war', desc:'English fluency, world-class STEM output, and cost arbitrage is making KL the preferred hiring hub for global AI companies.' },
+  { label:'Hiring Guide', tag:'Process', color:'#3F51B5', title:'The top 5% filter: How we screen LLM engineers differently', desc:'Our vetting protocol is built around live system design, production artefact review, and domain depth interviews — not keyword matching.' },
 ]
 
 const RADAR_DATA = [
-  { label:'Data Science', val:95, angle:-90, color:'#E91E8C' },
-  { label:'AI / ML', val:100, angle:-18, color:'#F7941D' },
-  { label:'LLM Ops', val:90, angle:54, color:'#29ABE2' },
-  { label:'Fwd. Deploy', val:95, angle:126, color:'#6B4C9A' },
+  { label:'Data Science', val:95, angle:-90, color:'#E91E63' },
+  { label:'AI / ML', val:100, angle:-18, color:'#FF9400' },
+  { label:'LLM Ops', val:90, angle:54, color:'#03A9F4' },
+  { label:'Fwd. Deploy', val:95, angle:126, color:'#3F51B5' },
   { label:'Software Eng.', val:85, angle:198, color:'#FFC107' },
 ]
 
@@ -44,8 +62,8 @@ function RadarChart() {
     <svg viewBox="0 0 260 260" style={{ width:'100%', maxWidth:260 }}>
       <defs>
         <linearGradient id="rf" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#E91E8C" stopOpacity="0.18"/>
-          <stop offset="100%" stopColor="#29ABE2" stopOpacity="0.18"/>
+          <stop offset="0%" stopColor="#E91E63" stopOpacity="0.18"/>
+          <stop offset="100%" stopColor="#03A9F4" stopOpacity="0.18"/>
         </linearGradient>
       </defs>
       {[25,50,75,100].map(ring => {
@@ -56,7 +74,7 @@ function RadarChart() {
         const o = toXY(d.angle, 100)
         return <line key={d.label} x1={cx} y1={cy} x2={o.x} y2={o.y} stroke="rgba(45,45,68,0.08)" strokeWidth="1"/>
       })}
-      <polygon points={polygon} fill="url(#rf)" stroke="#E91E8C" strokeWidth="2" strokeLinejoin="round"/>
+      <polygon points={polygon} fill="url(#rf)" stroke="#E91E63" strokeWidth="2" strokeLinejoin="round"/>
       {RADAR_DATA.map(d => {
         const p = toXY(d.angle, d.val)
         return <circle key={d.label} cx={p.x} cy={p.y} r={5} fill={d.color} stroke="white" strokeWidth="2"/>
@@ -66,14 +84,14 @@ function RadarChart() {
         const anchor = p.x < cx-10 ? 'end' : p.x > cx+10 ? 'start' : 'middle'
         return <text key={d.label} x={p.x} y={p.y} textAnchor={anchor} dominantBaseline="central" fontSize="9" fontFamily="Nunito, sans-serif" fill="#2D2D44" fontWeight="600" opacity="0.65">{d.label}</text>
       })}
-      <text x={cx} y={cy-7} textAnchor="middle" fontSize="15" fontFamily="Nunito, sans-serif" fill="#E91E8C" fontWeight="700">Top</text>
+      <text x={cx} y={cy-7} textAnchor="middle" fontSize="15" fontFamily="Nunito, sans-serif" fill="#E91E63" fontWeight="700">Top</text>
       <text x={cx} y={cy+10} textAnchor="middle" fontSize="10" fontFamily="Nunito, sans-serif" fill="#2D2D44" fontWeight="600" opacity="0.45">5% only</text>
     </svg>
   )
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('AI')
+  const [activeTab, setActiveTab] = useState('Software Engineering')
   const [form, setForm] = useState({ name:'', company:'', domain:'', message:'', status:'idle' })
 
   const handleSubmit = async (e) => {
@@ -96,33 +114,33 @@ export default function Home() {
   const CSS = `
     /* Page-specific styles only — global styles are in Layout.js */
     :root {
-      --pink:#E8235A; --pink-l:#ff3d6b;
-      --orange:#F5A623; --cyan:#29B6D8; --cyan-d:#1a9ab8;
-      --purple:#5B4B8A; --yellow:#FFC107;
-      --dark:#2D2D3A; --dark-l:#5a5a7a;
+      --pink:#E91E63; --pink-l:#ff4081;
+      --orange:#FF9400; --cyan:#03A9F4; --cyan-d:#0288d1;
+      --purple:#3F51B5; --yellow:#FFC107;
+      --dark:#212121; --dark-l:#424242;
       --off:#F4F6FB; --off2:#E8ECF4;
-      --muted:#8A8A9E; --border:rgba(45,45,58,0.11);
+      --muted:#8A8A9E; --border:rgba(33,33,33,0.11);
       --ease:cubic-bezier(0.4,0,0.2,1);
     }
     .hero{min-height:calc(100vh - 84px);display:flex;align-items:center;padding:72px 0 80px;position:relative;overflow:hidden;background:var(--off)}
     .hero-blobs{position:absolute;inset:0;overflow:hidden;pointer-events:none}
     .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.1}
-    .hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:center;position:relative;z-index:1}
+    .hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;text-align:center;position:relative;z-index:1}
     .hero-badge{display:inline-flex;align-items:center;gap:8px;background:white;border:1.5px solid rgba(232,35,90,0.22);color:var(--pink);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:24px;margin-bottom:24px;box-shadow:0 2px 12px rgba(232,35,90,0.1)}
     .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--pink);animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
     .hero-tagline{font-size:18px;color:var(--cyan);font-style:italic;margin-bottom:14px;font-family:'Nunito',sans-serif;font-weight:600}
-    .hero-h1{font-size:clamp(34px,5vw,60px);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:22px;color:var(--dark);font-family:'Nunito',sans-serif}
+    .hero-h1{font-size:clamp(36px,6vw,64px);font-weight:900;line-height:1.05;letter-spacing:-.02em;margin-bottom:24px;color:var(--dark);font-family:'Nunito',sans-serif;max-width:900px;margin-left:auto;margin-right:auto}
     .c-pink{color:var(--pink)}.c-cyan{color:var(--cyan)}.c-orange{color:var(--orange)}.c-purple{color:var(--purple)}
-    .hero-desc{font-size:17px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:36px}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px}
+    .hero-desc{font-size:18px;color:var(--muted);max-width:640px;line-height:1.7;margin-bottom:40px;margin-left:auto;margin-right:auto}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:52px;justify-content:center}
     .btn-pink{background:var(--pink);color:white;font-size:15px;font-weight:700;padding:13px 28px;border-radius:8px;transition:all .2s;box-shadow:0 4px 16px rgba(232,35,90,0.22);font-family:'Nunito',sans-serif}
     .btn-pink:hover{background:var(--pink-l);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,35,90,0.35)}
     .btn-outline{background:white;color:var(--dark);font-size:15px;font-weight:600;padding:13px 28px;border-radius:8px;border:1.5px solid var(--border);transition:all .2s;font-family:'Nunito',sans-serif}
     .btn-outline:hover{border-color:var(--cyan);color:var(--cyan)}
-    .hero-stats{display:flex;flex-wrap:wrap;gap:0}
-    .hero-stat{padding:0 28px 0 0}
-    .hero-stat+.hero-stat{border-left:1px solid var(--border);padding-left:28px}
+    .hero-stats{display:flex;flex-wrap:wrap;gap:0;justify-content:center;max-width:900px;margin:0 auto}
+    .hero-stat{padding:0 32px}
+    .hero-stat+.hero-stat{border-left:1px solid var(--border)}
     .stat-val{font-size:28px;font-weight:900;line-height:1;font-family:'Nunito',sans-serif}
     .stat-lbl{font-size:11.5px;color:var(--muted);margin-top:5px;font-weight:500}
     .radar-card{background:white;border:1.5px solid var(--border);border-radius:24px;padding:28px 24px;box-shadow:0 8px 40px rgba(45,45,58,0.07)}
@@ -139,7 +157,7 @@ export default function Home() {
     .eyebrow-bar{width:24px;height:2.5px;border-radius:1px}
     .section-h2{font-size:clamp(28px,4vw,44px);font-weight:900;line-height:1.15;margin-bottom:16px;letter-spacing:-.01em;color:var(--dark);font-family:'Nunito',sans-serif}
     .section-desc{font-size:16.5px;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:48px}
-    .stripe{height:5px;background:linear-gradient(90deg,#E8235A 0%,#F5A623 25%,#FFC107 50%,#29B6D8 75%,#5B4B8A 100%)}
+    .stripe{height:5px;background:linear-gradient(90deg,#E91E63 0%,#FF9400 25%,#FFC107 50%,#03A9F4 75%,#3F51B5 100%)}
     .domains-bg{background:var(--off);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
     .domain-tabs{display:flex;gap:8px;margin-bottom:40px}
     .dtab{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:700;border:1.5px solid var(--border);color:var(--muted);transition:all .2s;font-family:'Nunito',sans-serif}
@@ -164,8 +182,10 @@ export default function Home() {
     .sp-pk{background:rgba(232,35,90,0.08);color:var(--pink);border-color:rgba(232,35,90,0.15)}
     .feat-flag{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--pink);font-weight:700;background:rgba(232,35,90,0.08);border:1px solid rgba(232,35,90,0.18);padding:5px 12px;border-radius:12px;margin-bottom:14px;font-family:'Nunito',sans-serif}
     .hubs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:28px}
-    .hub-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:32px;transition:all .25s;position:relative;overflow:hidden}
+    .hub-card{background:white;border:1.5px solid var(--border);border-radius:20px;padding:32px;transition:all .25s;position:relative;overflow:hidden;display:block;text-decoration:none;color:inherit;cursor:pointer}
     .hub-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(45,45,58,0.1)}
+    .hub-card-cta{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;margin-top:18px;font-family:'Nunito',sans-serif;opacity:0.7;transition:opacity .2s}
+    .hub-card:hover .hub-card-cta{opacity:1}
     .hub-stripe{position:absolute;top:0;left:0;right:0;height:4px;border-radius:20px 20px 0 0}
     .hub-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
     .hub-code{font-size:46px;font-weight:900;line-height:1;letter-spacing:-.02em;opacity:.15;font-family:'Nunito',sans-serif}
@@ -229,7 +249,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>RECRUITABLE | Explore, Connect and Get Hired — KL · NYC · LON</title>
+        <title>RECRUITABLE | Explore, Connect and Get Hired — KL · US · LON</title>
         <meta name="description" content="Specialist recruitment for AI, LLM Engineering, Data Science, MLOps, and Software Engineering across APAC. Pre-vetted top 5% talent. Hire in under 7 days."/>
       </Head>
       <style>{CSS}</style>
@@ -237,43 +257,39 @@ export default function Home() {
       {/* HERO */}
       <section className="hero" id="hero">
         <div className="hero-blobs">
-          <div className="blob" style={{width:600,height:600,background:'#E91E8C',top:'-15%',right:'-8%'}}/>
-          <div className="blob" style={{width:500,height:500,background:'#29ABE2',bottom:'-15%',left:'-8%'}}/>
-          <div className="blob" style={{width:320,height:320,background:'#6B4C9A',top:'35%',left:'38%'}}/>
+          <div className="blob" style={{width:600,height:600,background:'#E91E63',top:'-15%',right:'-8%'}}/>
+          <div className="blob" style={{width:500,height:500,background:'#03A9F4',bottom:'-15%',left:'-8%'}}/>
+          <div className="blob" style={{width:320,height:320,background:'#3F51B5',top:'35%',left:'38%'}}/>
         </div>
         <div className="hero-inner">
           <div>
-            <div className="hero-badge"><span className="badge-dot"/>Top 5% Specialist Talent · APAC-Wide</div>
+            <div className="hero-badge"><span className="badge-dot"/>Global Scale · APAC · US · EMEA</div>
             <p className="hero-tagline">Explore, connect and get hired.</p>
-            <h1 className="hero-h1">We recruit the <span className="c-pink">engineers</span><br/>building tomorrow&apos;s <span className="c-cyan">AI</span> companies</h1>
-            <p className="hero-desc">RecruitABLE connects the world&apos;s most demanding technology companies with pre-vetted specialists in AI/ML, LLM Engineering, Data Science, and Forward Deployment — in under 7 days.</p>
+            <h1 className="hero-h1">We help the world&apos;s most ambitious <span className="c-pink">Tech Teams</span> scale at speed</h1>
+            <p className="hero-desc">From high-growth AI and SaaS unicorns to global Fintech leaders and E-commerce powerhouses, we scale top-tier talent across every technical vertical.</p>
             <div className="hero-actions">
               <a href="#contact" className="btn-pink">Start a Search →</a>
               <a href="#domains" className="btn-outline">Our Specialisations</a>
             </div>
-            <div className="hero-stats">
-              <div className="hero-stat"><div className="stat-val c-pink">&lt; 7</div><div className="stat-lbl">Days to place</div></div>
-              <div className="hero-stat"><div className="stat-val c-cyan">Top 5%</div><div className="stat-lbl">Vetted only</div></div>
-              <div className="hero-stat"><div className="stat-val c-purple">3</div><div className="stat-lbl">Global hubs</div></div>
-              <div className="hero-stat"><div className="stat-val c-orange">5</div><div className="stat-lbl">Core domains</div></div>
-            </div>
-          </div>
-          <div className="radar-card">
-            <div className="radar-title">Technical Vetting Benchmark — Top 5% Threshold</div>
-            <RadarChart/>
-            <div className="radar-legend">
-              {RADAR_DATA.map(d => (
-                <div key={d.label} className="rl-item">
-                  <span className="rl-label">
-                    <span style={{width:8,height:8,borderRadius:'50%',background:d.color,display:'inline-block',flexShrink:0}}/>
-                    {d.label}
-                  </span>
-                  <div style={{display:'flex',alignItems:'center',gap:8}}>
-                    <div className="rl-bar-bg"><div className="rl-bar" style={{width:`${d.val}%`,background:d.color}}/></div>
-                    <span className="rl-pct" style={{color:d.color}}>{d.val}%</span>
+
+            <div style={{marginTop:48,marginBottom:40}}>
+              <p className="fl" style={{marginBottom:16,opacity:0.6}}>Candidate Benchmarks by Role</p>
+              <div style={{display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center'}}>
+                {RADAR_DATA.map(d=>(
+                  <div key={d.label} style={{background:'white',padding:'8px 16px',borderRadius:12,border:'1px solid var(--border)',display:'flex',alignItems:'center',gap:8}}>
+                    <span style={{width:8,height:8,borderRadius:'50%',background:d.color}}/>
+                    <span style={{fontSize:13,fontWeight:700,color:'var(--dark)'}}>{d.label}</span>
+                    <span style={{fontSize:13,fontWeight:800,color:d.color}}>{d.val}%</span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            </div>
+            
+            <div className="hero-stats" style={{marginTop:40,paddingTop:40,borderTop:'1px solid var(--border)'}}>
+              <div className="hero-stat"><div className="stat-val c-pink">&lt; 7</div><div className="stat-lbl">Days to place</div></div>
+              <div className="hero-stat"><div className="stat-val c-cyan">Top 5%</div><div className="stat-lbl">Vetted Only</div></div>
+              <div className="hero-stat"><div className="stat-val c-purple">95%</div><div className="stat-lbl">Software Bench</div></div>
+              <div className="hero-stat"><div className="stat-val c-orange">100%</div><div className="stat-lbl">Fintech Ready</div></div>
             </div>
           </div>
         </div>
@@ -284,36 +300,26 @@ export default function Home() {
       {/* SPECIALISATION */}
       <section className="section domains-bg" id="domains">
         <div className="si">
-          <div className="eyebrow" style={{color:'#E91E8C'}}><span className="eyebrow-bar" style={{background:'#E91E8C'}}/>Specialisation</div>
-          <h2 className="section-h2">Specialists in the roles <span className="c-pink">that matter</span></h2>
-          <p className="section-desc">We do not generalise. Every placement sits within one of five high-signal domains where we maintain deep, live market intelligence across APAC and beyond.</p>
-          <div className="domain-tabs">
-            <button className={`dtab${activeTab==='AI'?' ap':''}`} onClick={()=>setActiveTab('AI')}>AI / ML &amp; LLM</button>
-            <button className={`dtab${activeTab==='Engineering'?' ac':''}`} onClick={()=>setActiveTab('Engineering')}>Engineering</button>
+          <div className="eyebrow" style={{color:'#E91E63'}}><span className="eyebrow-bar" style={{background:'#E91E63'}}/>Specialisation</div>
+          <h2 className="section-h2">Where the World’s <span className="c-pink">Top 5%</span> Meets the Future of Tech</h2>
+          <div className="section-desc" style={{maxWidth:800}}>
+            <p style={{marginBottom:16,fontSize:18,fontWeight:600,color:'var(--dark)'}}>We don’t just fill roles; we fuel breakthroughs.</p>
+            <p style={{marginBottom:16}}>By scouting the top 5% of engineering and leadership talent across the US, London, and APAC, we bridge the gap between elite visionaries and the world’s most disruptive companies.</p>
+            <p>From stealth-mode AI labs to hyper-growth SaaS and Fintech giants, we introduce the architects of tomorrow to the businesses defining it today.</p>
+          </div>
+          <div className="domain-tabs" style={{overflowX:'auto',paddingBottom:10}}>
+            <button className={`dtab${activeTab==='Software Engineering'?' ap':''}`} onClick={()=>setActiveTab('Software Engineering')}>Software</button>
+            <button className={`dtab${activeTab==='AI & ML'?' ac':''}`} onClick={()=>setActiveTab('AI & ML')}>AI &amp; ML</button>
+            <button className={`dtab${activeTab==='Data'?' ap':''}`} style={{'--pink':'var(--purple)'}} onClick={()=>setActiveTab('Data')}>Data</button>
+            <button className={`dtab${activeTab==='Product'?' ac':''}`} style={{'--cyan':'var(--orange)'}} onClick={()=>setActiveTab('Product')}>Product</button>
           </div>
           <div className="domains-grid">
-            {activeTab==='AI' && (
-              <div className="dcard feat">
-                <div className="dcard-stripe" style={{background:'linear-gradient(90deg,#E91E8C,#F7941D)'}}/>
-                <div className="dcard-inner">
-                  <div>
-                    <div className="feat-flag">★ Fastest Growing Role in AI</div>
-                    <div className="dtag tb">Bridge Role</div>
-                    <h3>Forward Deployment Engineering</h3>
-                    <p>The rarest hybrid in the AI industry: engineers who implement complex AI products directly into client infrastructure. Equal parts field engineer, solutions architect, and AI practitioner — this is the critical gap between selling AI and deploying it at scale.</p>
-                  </div>
-                  <div>
-                    <p style={{fontSize:14,color:'var(--muted)',marginBottom:20,lineHeight:1.7}}>We have mapped this emerging discipline since 2022. Our candidates have shipped production AI at tier-1 SaaS companies, global fintechs, and AI-native startups across SEA and the US.</p>
-                    <div className="skills">{['Full-Stack Dev','Cloud Infra','Field DevOps','LLM Integration','Customer Success','Enterprise SaaS'].map(s=><span className="sp sp-pk" key={s}>{s}</span>)}</div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {(activeTab==='AI'?DOMAINS.filter(d=>d.id!=='forward'&&d.tag==='AI/ML'):DOMAINS.filter(d=>d.tag==='Engineering')).map(d=>(
-              <div className="dcard" key={d.id}>
+            {DOMAINS.filter(d => d.cat === activeTab).map(d => (
+              <div className="dcard" key={d.id} style={{display:'flex',flexDirection:'column'}}>
                 <div className="dcard-stripe" style={{background:`linear-gradient(90deg,${d.color},${d.accent})`}}/>
-                <div className={`dtag ${d.tag==='AI/ML'?'ta':'te'}`}>{d.tag}</div>
-                <h3>{d.title}</h3><p>{d.desc}</p>
+                <div className={`dtag ${d.cat==='AI & ML'?'tb':d.cat==='Software Engineering'?'ta':d.cat==='Data'?'te':'tb'}`}>{d.cat}</div>
+                <h3 style={{fontSize:18}}>{d.title}</h3>
+                <p style={{flex:1}}>{d.desc}</p>
                 <div className="skills">{d.skills.map(s=><span className="sp" key={s}>{s}</span>)}</div>
               </div>
             ))}
@@ -321,17 +327,17 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="stripe" style={{background:'linear-gradient(90deg,#6B4C9A,#29ABE2,#FFC107)'}}/>
+      <div className="stripe" style={{background:'linear-gradient(90deg,#3F51B5,#03A9F4,#FFC107)'}}/>
 
       {/* GLOBAL HUBS */}
       <section className="section" id="hubs">
         <div className="si">
-          <div className="eyebrow" style={{color:'#29ABE2'}}><span className="eyebrow-bar" style={{background:'#29ABE2'}}/>Global Hubs</div>
+          <div className="eyebrow" style={{color:'#03A9F4'}}><span className="eyebrow-bar" style={{background:'#03A9F4'}}/>Global Hubs</div>
           <h2 className="section-h2">Where we <span className="c-cyan">operate</span></h2>
           <p className="section-desc">Three anchor points, one mission. Kuala Lumpur is our talent engine — New York and London are where we place them.</p>
           <div className="hubs-grid">
             {HUBS.map(hub=>(
-              <div key={hub.city} className="hub-card">
+              <Link key={hub.city} href={`/jobs?region=${hub.region}`} className="hub-card">
                 <div className="hub-stripe" style={{background:hub.color}}/>
                 <div className="hub-top">
                   <span className="hub-code" style={{color:hub.color}}>{hub.code}</span>
@@ -340,12 +346,13 @@ export default function Home() {
                 <div className="hub-city">{hub.city}</div>
                 <p className="hub-desc">{hub.desc}</p>
                 <div className="hub-stats">{hub.stats.map(s=><div key={s.label}><div className="hsv" style={{color:hub.color}}>{s.val}</div><div className="hsl">{s.label}</div></div>)}</div>
-              </div>
+                <div className="hub-card-cta" style={{color:hub.color}}>View {hub.code} jobs →</div>
+              </Link>
             ))}
           </div>
           <div className="tz-bar">
             <span style={{fontSize:20}}>🌐</span>
-            <span><strong>Follow-the-sun coverage:</strong> KL (GMT+8) · London (GMT/BST) · New York (ET) — seamless hiring support across every major time zone.</span>
+            <span><strong>Follow-the-sun coverage:</strong> KL (GMT+8) · London (GMT/BST) · US (ET/PT) — seamless hiring support across every major time zone.</span>
           </div>
         </div>
       </section>
@@ -353,7 +360,7 @@ export default function Home() {
       {/* MARKET INSIGHTS */}
       <section className="section insights-bg" id="insights">
         <div className="si">
-          <div className="eyebrow" style={{color:'#6B4C9A'}}><span className="eyebrow-bar" style={{background:'#6B4C9A'}}/>Market Insights</div>
+          <div className="eyebrow" style={{color:'#3F51B5'}}><span className="eyebrow-bar" style={{background:'#3F51B5'}}/>Market Insights</div>
           <h2 className="section-h2">Intelligence from the <span className="c-purple">front line</span></h2>
           <p className="section-desc">We publish what we see — not what sounds good. Candid market intelligence from active placements across APAC, US, and Europe.</p>
           <div className="insights-grid">
@@ -374,7 +381,7 @@ export default function Home() {
         <div className="si">
           <div className="contact-grid">
             <div>
-              <div className="eyebrow" style={{color:'#E91E8C'}}><span className="eyebrow-bar" style={{background:'#E91E8C'}}/>Get in Touch</div>
+              <div className="eyebrow" style={{color:'#E91E63'}}><span className="eyebrow-bar" style={{background:'#E91E63'}}/>Get in Touch</div>
               <h2 className="section-h2">Let&apos;s find your <span className="c-pink">next hire</span></h2>
               <p style={{fontSize:16,color:'var(--muted)',lineHeight:1.7,marginBottom:8}}>Whether you need one specialist or an entire AI team, we work on retained and contingency mandates. Most searches are active within 48 hours.</p>
               <div className="email-block">
@@ -382,7 +389,7 @@ export default function Home() {
                 <div className="email-val"><a href="mailto:info@recruitable.asia">info@recruitable.asia</a></div>
               </div>
               <div className="cmeta">
-                <div className="cmeta-item"><div className="cmeta-icon">◎</div><div><div className="cmeta-lbl">Global Hubs</div><div className="cmeta-val">Kuala Lumpur · New York City · London</div></div></div>
+                <div className="cmeta-item"><div className="cmeta-icon">◎</div><div><div className="cmeta-lbl">Global Hubs</div><div className="cmeta-val">Kuala Lumpur · United States · London</div></div></div>
                 <div className="cmeta-item"><div className="cmeta-icon">◷</div><div><div className="cmeta-lbl">Response Time</div><div className="cmeta-val">Within 4 business hours</div></div></div>
                 <div className="cmeta-item"><div className="cmeta-icon">↗</div><div><div className="cmeta-lbl">Typical Time-to-Hire</div><div className="cmeta-val" style={{color:'#E91E8C'}}>Under 7 days</div></div></div>
               </div>
@@ -418,7 +425,7 @@ export default function Home() {
                     <textarea className="ft" required placeholder="Describe the role, tech stack, seniority level, and timeline..." value={form.message} onChange={e=>setForm(s=>({...s,message:e.target.value}))}/>
                   </div>
                   <button type="submit" className="fsub" disabled={form.status==='sending'}>{form.status==='sending'?'Sending...':'Submit Enquiry →'}</button>
-                  <p style={{fontSize:12,color:'var(--muted)',marginTop:14,textAlign:'center'}}>Or email us at <a href="mailto:info@recruitable.asia" style={{color:'#E91E8C',fontWeight:700}}>info@recruitable.asia</a></p>
+                  <p style={{fontSize:12,color:'var(--muted)',marginTop:14,textAlign:'center'}}>Or email us at <a href="mailto:info@recruitable.asia" style={{color:'#E91E63',fontWeight:700}}>info@recruitable.asia</a></p>
                 </form>
               )}
             </div>

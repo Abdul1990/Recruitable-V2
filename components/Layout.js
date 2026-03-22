@@ -5,14 +5,21 @@ import {
   MapPin, X, Briefcase, Users, Brain, ChevronRight
 } from 'lucide-react'
 
-function PuzzleMark({ size = 36 }) {
+function PuzzleMark({ size = 42, color = 'var(--pink)' }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 36 36" fill="none">
-      <path d="M13 8 Q13 5 18 5 Q23 5 23 8" stroke="#2D2D3A" strokeWidth="2.2" strokeLinecap="round" fill="none"/>
-      <path d="M8 12 L16 12 L16 14.5 Q18 14.5 18 16.5 Q18 18.5 16 18.5 L16 20 L8 20 L8 17.5 Q6 17.5 6 15.5 Q6 13.5 8 13.5 Z" fill="#E8235A"/>
-      <path d="M17 12 L26 12 L26 20 L24 20 Q24 22 22 22 Q20 22 20 20 L17 20 L17 18 Q15 18 15 16 Q15 14 17 14 Z" fill="#F5A623"/>
-      <path d="M8 21 L16 21 L16 28 L13 28 Q13 30 11 30 Q9 30 9 28 L8 28 L8 24 Q6 24 6 22 Q6 20 8 20 Z" fill="#29B6D8"/>
-      <path d="M17 21 L26 21 L26 28 L24 28 Q24 30 22 30 Q20 30 20 28 L17 28 L17 25 Q15 25 15 23 Q15 21 17 21 Z" fill="#5B4B8A"/>
+    <svg 
+      width={size} 
+      height={size} 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ flexShrink: 0 }}
+    >
+      <path 
+        d="M18.5 11C18.5 9.61929 19.6193 8.5 21 8.5C22.3807 8.5 23.5 9.61929 23.5 11C23.5 12.3807 22.3807 13.5 21 13.5C20.6725 13.5 20.3631 13.4371 20.0805 13.3229L19.5 13.0867V20.5C19.5 21.0523 19.0523 21.5 18.5 21.5H11.0867L11.3229 20.0805C11.4371 19.7979 11.5 19.4885 11.5 19.1611C11.5 17.7804 10.3807 16.6611 9 16.6611C7.61929 16.6611 6.5 17.7804 6.5 19.1611C6.5 19.4885 6.56291 19.7979 6.67711 20.0805L6.91334 20.6611H3.5C2.94772 20.6611 2.5 20.2134 2.5 19.6611V13.0867L3.13894 13.3229C3.42154 13.4371 3.73092 13.5 4.05833 13.5C5.43904 13.5 6.55833 12.3807 6.55833 11C6.55833 9.61929 5.43904 8.5 4.05833 8.5C3.73092 8.5 3.42154 8.56291 3.13894 8.67711L2.5 8.91334V3.5C2.5 2.94772 2.94772 2.5 3.5 2.5H13.0867L13.3229 3.13894C13.4371 3.42154 13.5 3.73092 13.5 4.05833C13.5 5.43904 12.3807 6.55833 11 6.55833C9.61929 6.55833 8.5 5.43904 8.5 4.05833C8.5 3.73092 8.56291 3.42154 8.67711 3.13894L8.91334 2.5H18.5C19.0523 2.5 19.5 2.94772 19.5 3.5V10.9133L18.9133 10.6771C18.3611 10.4571 18.5 11 18.5 11Z" 
+        fill={color}
+      />
+      <circle cx="11" cy="11" r="2" fill="white" opacity="0.3" />
     </svg>
   )
 }
@@ -45,12 +52,12 @@ export default function Layout({ children }) {
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-          --pink:    #E8235A;
-          --orange:  #F5A623;
-          --cyan:    #29B6D8;
-          --purple:  #5B4B8A;
-          --teal:    #5BB8D4;
-          --charcoal:#2D2D3A;
+          --pink:    #E91E63;
+          --orange:  #FF9400;
+          --cyan:    #03A9F4;
+          --purple:  #3F51B5;
+          --teal:    #00BCD4;
+          --charcoal:#212121;
           --charcoal-soft: #3D3D4E;
           --slate:   #F4F6FB;
           --slate-d: #E8ECF4;
@@ -138,9 +145,9 @@ export default function Layout({ children }) {
       <div className="topbar">
         <div className="topbar-inner">
           <div className="topbar-hubs">
-            <div className="topbar-hub"><span className="hub-pip" style={{ background: '#29B6D8' }} /><span>KL — Engine Room</span></div>
-            <div className="topbar-hub"><span className="hub-pip" style={{ background: '#E8235A' }} /><span>NYC — Strategic Frontier</span></div>
-            <div className="topbar-hub"><span className="hub-pip" style={{ background: '#5B4B8A' }} /><span>LON — Strategic Frontier</span></div>
+            <div className="topbar-hub"><span className="hub-pip" style={{ background: 'var(--cyan)' }} /><span>KL — Engine Room</span></div>
+            <div className="topbar-hub"><span className="hub-pip" style={{ background: 'var(--pink)' }} /><span>US — Strategic Frontier</span></div>
+            <div className="topbar-hub"><span className="hub-pip" style={{ background: 'var(--purple)' }} /><span>LON — Strategic Frontier</span></div>
           </div>
           <div className="topbar-contact">
             <a href="mailto:info@recruitable.asia">info@recruitable.asia</a>
@@ -152,7 +159,7 @@ export default function Layout({ children }) {
       <nav className={`nav${scrolled ? ' scrolled' : ''}`}>
         <div className="nav-inner">
           <Link href="/" className="logo">
-            <PuzzleMark size={36} />
+            <PuzzleMark size={42} />
             <div>
               <div className="logo-wordmark">Recruitable</div>
               <span className="logo-tagline">Explore, connect and get hired</span>
@@ -210,14 +217,14 @@ export default function Layout({ children }) {
       <footer className="footer">
         <div className="footer-inner">
           <div className="footer-brand">
-            <PuzzleMark size={30} />
+            <PuzzleMark size={36} />
             <div>
               <div className="footer-wordmark">Recruitable</div>
               <span className="footer-tagline">Explore, connect and get hired</span>
             </div>
           </div>
           <div className="footer-right">
-            KL · NYC · LON &nbsp;·&nbsp; © 2026 Recruitable Asia. All rights reserved. &nbsp;·&nbsp;{' '}
+            KL · US · LON &nbsp;·&nbsp; © 2026 Recruitable Asia. All rights reserved. &nbsp;·&nbsp;{' '}
             <a href="mailto:info@recruitable.asia">info@recruitable.asia</a> &nbsp;·&nbsp;{' '}
             <Link href="/privacy">Privacy Policy</Link>
           </div>
