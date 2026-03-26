@@ -1131,8 +1131,79 @@ function JobDetail({ job, onApply, onClose }) {
   )
 }
 
+// ─── REGION SEO CONFIG ───────────────────────────────────────────────────────
+const REGION_SEO = {
+  US: {
+    title: 'AI & Tech Jobs in the United States | Recruitable',
+    description: 'Browse exclusive AI Engineer, LLM Engineer, Data Scientist, and Software Engineering roles across San Francisco, New York, and beyond. Top 5% vetted APAC talent placed into US companies by Recruitable.',
+    keywords: 'AI engineer jobs US, LLM engineer jobs New York, AI jobs San Francisco, tech jobs United States, data scientist jobs US, software engineer recruitment US, AI staffing agency US, forward deployment engineer jobs US, LLM jobs Silicon Valley, APAC talent for US companies',
+    canonical: 'https://recruitable.asia/jobs?region=US',
+    ogTitle: 'AI & Tech Jobs in the United States | Recruitable',
+    ogDesc: 'Top 5% AI Engineers, LLM Engineers, Data Scientists, and Software Engineers placed into US companies from APAC talent pools. Roles across SF, NYC, and beyond.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "AI & Tech Jobs in the United States",
+      "description": "Exclusive AI, ML, Data Science, and Software Engineering roles across San Francisco, New York, and US tech hubs — sourced by Recruitable from APAC's top 5% talent pool.",
+      "url": "https://recruitable.asia/jobs?region=US",
+      "numberOfItems": JOBS.filter(j => j.region === 'US').length,
+      "provider": { "@type": "EmploymentAgency", "name": "Recruitable", "url": "https://recruitable.asia" }
+    }
+  },
+  KL: {
+    title: 'AI & Tech Jobs in Kuala Lumpur, Malaysia | Recruitable',
+    description: 'Browse exclusive AI Engineer, Data Scientist, and Software Engineering roles in Kuala Lumpur and Malaysia. Top 5% pre-vetted talent from APAC\'s fastest-growing tech hub. Placed by Recruitable.',
+    keywords: 'AI engineer jobs Kuala Lumpur, tech jobs Malaysia, software engineer jobs KL, data scientist jobs Malaysia, AI jobs Southeast Asia, LLM engineer jobs Malaysia, tech recruitment Kuala Lumpur, software engineering jobs Malaysia, AI talent Malaysia, FAANG jobs Kuala Lumpur',
+    canonical: 'https://recruitable.asia/jobs?region=KL',
+    ogTitle: 'AI & Tech Jobs in Kuala Lumpur, Malaysia | Recruitable',
+    ogDesc: 'Top 5% AI Engineers, LLM Engineers, Data Scientists, and Software Engineers in Kuala Lumpur. Pre-vetted by Recruitable, APAC\'s specialist tech recruiter.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "AI & Tech Jobs in Kuala Lumpur, Malaysia",
+      "description": "Exclusive AI, ML, Data Science, and Software Engineering roles in Kuala Lumpur — Malaysia's fastest-growing tech talent hub, sourced by Recruitable.",
+      "url": "https://recruitable.asia/jobs?region=KL",
+      "numberOfItems": JOBS.filter(j => j.region === 'KL').length,
+      "provider": { "@type": "EmploymentAgency", "name": "Recruitable", "url": "https://recruitable.asia" }
+    }
+  },
+  London: {
+    title: 'AI & Tech Jobs in London, UK | Recruitable',
+    description: 'Browse exclusive AI Engineer, LLM Engineer, Data Scientist, and Software Engineering roles in London. Top 5% APAC talent placed into London\'s leading tech and fintech companies by Recruitable.',
+    keywords: 'AI engineer jobs London, tech jobs London UK, data scientist jobs London, software engineer jobs London, LLM engineer London, AI recruitment London, APAC talent London, fintech recruitment London, AI jobs UK, software engineering recruitment London',
+    canonical: 'https://recruitable.asia/jobs?region=London',
+    ogTitle: 'AI & Tech Jobs in London, UK | Recruitable',
+    ogDesc: 'Top 5% AI Engineers, LLM Engineers, Data Scientists, and Software Engineers placed into London tech and fintech companies. Sourced from APAC by Recruitable.',
+    schema: {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "AI & Tech Jobs in London, UK",
+      "description": "Exclusive AI, ML, Data Science, and Software Engineering roles in London — connecting APAC's top 5% engineers with London's leading tech and fintech companies.",
+      "url": "https://recruitable.asia/jobs?region=London",
+      "numberOfItems": JOBS.filter(j => j.region === 'London').length,
+      "provider": { "@type": "EmploymentAgency", "name": "Recruitable", "url": "https://recruitable.asia" }
+    }
+  }
+}
+
+const DEFAULT_SEO = {
+  title: 'AI & Tech Jobs in APAC, US & London | Recruitable — Top 5% Roles Only',
+  description: "Browse exclusive AI Engineer, LLM Engineer, Data Scientist, MLOps, and Software Engineering roles across Kuala Lumpur, US, and London. Top 5% vetted opportunities from Recruitable, APAC's specialist AI and tech recruiter.",
+  keywords: 'AI engineer jobs APAC, LLM engineer jobs, data scientist jobs Malaysia, software engineer jobs Kuala Lumpur, AI jobs Southeast Asia, tech jobs Malaysia, forward deployment engineer jobs, MLOps jobs APAC, AI jobs US, software engineering jobs London',
+  canonical: 'https://recruitable.asia/jobs',
+  ogTitle: 'AI & Tech Jobs in APAC, US & London | Recruitable',
+  ogDesc: 'Browse exclusive AI Engineer, LLM Engineer, Data Scientist, and Software Engineering roles across Kuala Lumpur, US, and London. Top 5% vetted only.',
+  schema: null
+}
+
+export function getServerSideProps({ query }) {
+  const region = query.region && REGION_SEO[query.region] ? query.region : null
+  const seo = region ? REGION_SEO[region] : DEFAULT_SEO
+  return { props: { seo } }
+}
+
 // ─── MAIN PAGE ────────────────────────────────────────────────────────────────
-export default function Jobs() {
+export default function Jobs({ seo }) {
   const router = useRouter()
   const [region, setRegion] = useState('All')
   const [type, setType] = useState('All')
@@ -1165,21 +1236,24 @@ export default function Jobs() {
   return (
     <>
       <Head>
-        <title>AI &amp; Tech Jobs in APAC, US &amp; London | Recruitable — Top 5% Roles Only</title>
-        <meta name="description" content="Browse exclusive AI Engineer, LLM Engineer, Data Scientist, MLOps, and Software Engineering roles across Kuala Lumpur, US, and London. Top 5% vetted opportunities from Recruitable, APAC's specialist AI and tech recruiter."/>
-        <meta name="keywords" content="AI engineer jobs APAC, LLM engineer jobs, data scientist jobs Malaysia, software engineer jobs Kuala Lumpur, AI jobs Southeast Asia, tech jobs Malaysia, forward deployment engineer jobs, MLOps jobs APAC, AI jobs US, software engineering jobs London"/>
+        <title>{seo.title}</title>
+        <meta name="description" content={seo.description}/>
+        <meta name="keywords" content={seo.keywords}/>
         <meta name="robots" content="index, follow"/>
-        <link rel="canonical" href="https://recruitable.asia/jobs"/>
+        <link rel="canonical" href={seo.canonical}/>
         <meta property="og:type" content="website"/>
-        <meta property="og:url" content="https://recruitable.asia/jobs"/>
+        <meta property="og:url" content={seo.canonical}/>
         <meta property="og:site_name" content="Recruitable"/>
-        <meta property="og:title" content="AI &amp; Tech Jobs in APAC, US &amp; London | Recruitable"/>
-        <meta property="og:description" content="Browse exclusive AI Engineer, LLM Engineer, Data Scientist, and Software Engineering roles across Kuala Lumpur, US, and London. Top 5% vetted only."/>
+        <meta property="og:title" content={seo.ogTitle}/>
+        <meta property="og:description" content={seo.ogDesc}/>
         <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
         <meta name="twitter:card" content="summary_large_image"/>
-        <meta name="twitter:title" content="AI &amp; Tech Jobs in APAC, US &amp; London | Recruitable"/>
-        <meta name="twitter:description" content="Top 5% vetted AI, LLM, Data Science, and Software Engineering roles across Kuala Lumpur, US, and London."/>
+        <meta name="twitter:title" content={seo.ogTitle}/>
+        <meta name="twitter:description" content={seo.ogDesc}/>
         <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
+        {seo.schema && (
+          <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(seo.schema)}}/>
+        )}
       </Head>
 
       <style>{`
