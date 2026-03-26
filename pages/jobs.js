@@ -1165,8 +1165,21 @@ export default function Jobs() {
   return (
     <>
       <Head>
-        <title>Jobs | Recruitable — Top 5% Tech Roles</title>
-        <meta name="description" content="Browse exclusive top 5% AI, ML, and engineering roles across US · KL · London." />
+        <title>AI &amp; Tech Jobs in APAC, US &amp; London | Recruitable — Top 5% Roles Only</title>
+        <meta name="description" content="Browse exclusive AI Engineer, LLM Engineer, Data Scientist, MLOps, and Software Engineering roles across Kuala Lumpur, US, and London. Top 5% vetted opportunities from Recruitable, APAC's specialist AI and tech recruiter."/>
+        <meta name="keywords" content="AI engineer jobs APAC, LLM engineer jobs, data scientist jobs Malaysia, software engineer jobs Kuala Lumpur, AI jobs Southeast Asia, tech jobs Malaysia, forward deployment engineer jobs, MLOps jobs APAC, AI jobs US, software engineering jobs London"/>
+        <meta name="robots" content="index, follow"/>
+        <link rel="canonical" href="https://recruitable.asia/jobs"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://recruitable.asia/jobs"/>
+        <meta property="og:site_name" content="Recruitable"/>
+        <meta property="og:title" content="AI &amp; Tech Jobs in APAC, US &amp; London | Recruitable"/>
+        <meta property="og:description" content="Browse exclusive AI Engineer, LLM Engineer, Data Scientist, and Software Engineering roles across Kuala Lumpur, US, and London. Top 5% vetted only."/>
+        <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:title" content="AI &amp; Tech Jobs in APAC, US &amp; London | Recruitable"/>
+        <meta name="twitter:description" content="Top 5% vetted AI, LLM, Data Science, and Software Engineering roles across Kuala Lumpur, US, and London."/>
+        <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
       </Head>
 
       <style>{`

@@ -281,35 +281,75 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Recruitable | AI & Tech Recruitment — KL · US · London</title>
-        <meta name="description" content="Specialist recruitment for AI Engineers, LLM Engineers, Data Scientists, MLOps, and Software Engineers across APAC, US, and Europe. Pre-vetted top 5% talent. Hire in under 30 days."/>
-        <meta name="keywords" content="AI recruitment, tech recruitment, LLM engineer jobs, data scientist jobs, software engineer Malaysia, AI jobs Kuala Lumpur, forward deployment engineer, MLOps recruitment, APAC tech talent, AI headhunter"/>
+        <title>Recruitable | AI &amp; Tech Recruitment Agency — APAC, Malaysia · US · London</title>
+        <meta name="description" content="Recruitable is a specialist AI and tech recruitment agency headquartered in Kuala Lumpur, Malaysia. We place top 5% AI Engineers, LLM Engineers, Data Scientists, and Software Engineers across APAC, US, and Europe — in under 30 days."/>
+        <meta name="keywords" content="AI recruitment agency APAC, tech recruitment agency Malaysia, AI recruitment agency Kuala Lumpur, hire AI engineers Southeast Asia, LLM engineer recruitment, data science recruitment APAC, software engineer recruitment Malaysia, AI headhunter Asia Pacific, forward deployment engineer recruitment, MLOps recruitment agency, tech talent APAC, AI staffing agency, AI engineer jobs Malaysia, tech recruitment Southeast Asia, AI hiring agency"/>
         <meta name="robots" content="index, follow"/>
         <link rel="canonical" href="https://recruitable.asia"/>
-        {/* Open Graph */}
         <meta property="og:type" content="website"/>
         <meta property="og:url" content="https://recruitable.asia"/>
         <meta property="og:site_name" content="Recruitable"/>
-        <meta property="og:title" content="Recruitable | AI & Tech Recruitment — KL · US · London"/>
-        <meta property="og:description" content="Specialist recruitment for AI Engineers, LLM Engineers, Data Scientists, and Software Engineers across APAC, US, and Europe. Pre-vetted top 5% talent."/>
+        <meta property="og:locale" content="en_US"/>
+        <meta property="og:title" content="Recruitable | AI &amp; Tech Recruitment Agency — APAC, Malaysia · US · London"/>
+        <meta property="og:description" content="Specialist AI and tech recruitment agency in Kuala Lumpur. We place top 5% AI Engineers, LLM Engineers, Data Scientists, and Software Engineers across APAC, US, and Europe."/>
         <meta property="og:image" content="https://recruitable.asia/og-image.png"/>
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image"/>
-        <meta name="twitter:title" content="Recruitable | AI & Tech Recruitment — KL · US · London"/>
-        <meta name="twitter:description" content="Specialist recruitment for AI, LLM Engineering, Data Science, and Software Engineering across APAC, US, and Europe."/>
+        <meta name="twitter:title" content="Recruitable | AI &amp; Tech Recruitment Agency — APAC, Malaysia · US · London"/>
+        <meta name="twitter:description" content="Specialist AI and tech recruitment in Kuala Lumpur. Top 5% AI Engineers, LLM Engineers, Data Scientists, and Software Engineers placed across APAC, US, and Europe."/>
         <meta name="twitter:image" content="https://recruitable.asia/og-image.png"/>
-        {/* JSON-LD Structured Data */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Recruitable",
-          "url": "https://recruitable.asia",
-          "logo": "https://recruitable.asia/og-image.png",
-          "description": "Specialist AI and tech recruitment agency placing top 5% engineers across APAC, US, and Europe.",
-          "email": "info@recruitable.asia",
-          "areaServed": ["MY", "US", "GB"],
-          "sameAs": [],
-          "knowsAbout": ["AI Engineering", "LLM Engineering", "Data Science", "MLOps", "Software Engineering", "Forward Deployment Engineering"]
+          "@graph": [
+            {
+              "@type": ["Organization", "EmploymentAgency"],
+              "@id": "https://recruitable.asia/#organization",
+              "name": "Recruitable",
+              "alternateName": "Recruitable Asia",
+              "url": "https://recruitable.asia",
+              "logo": { "@type": "ImageObject", "url": "https://recruitable.asia/og-image.png", "width": 1200, "height": 630 },
+              "description": "Specialist AI and tech recruitment agency headquartered in Kuala Lumpur, Malaysia. We place top 5% AI Engineers, LLM Engineers, Data Scientists, Forward Deployment Engineers, and Software Engineers across APAC, US, and Europe.",
+              "email": "info@recruitable.asia",
+              "address": { "@type": "PostalAddress", "addressLocality": "Kuala Lumpur", "addressRegion": "Wilayah Persekutuan", "addressCountry": "MY" },
+              "areaServed": [
+                { "@type": "Country", "name": "Malaysia" },
+                { "@type": "Country", "name": "United States" },
+                { "@type": "Country", "name": "United Kingdom" },
+                { "@type": "Place", "name": "Southeast Asia" },
+                { "@type": "Place", "name": "Asia Pacific" }
+              ],
+              "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Tech Recruitment Services",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Engineer Recruitment", "description": "Specialist placement of AI Engineers, LLM Engineers, and ML Engineers across APAC and global markets" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Data Science Recruitment", "description": "Placing Data Scientists and MLOps engineers for high-growth tech companies in APAC, US, and Europe" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Software Engineering Recruitment", "description": "Full-stack, back-end, and mobile engineering placement across Southeast Asia, US, and London" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Forward Deployment Engineer Recruitment", "description": "Specialist headhunting for Forward Deployment Engineers at AI-native companies globally" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "AI Product Management Recruitment", "description": "AI Product Manager and Product Engineering placement for tech companies in APAC and globally" } }
+                ]
+              },
+              "knowsAbout": ["AI Engineering", "LLM Engineering", "Data Science", "MLOps", "Software Engineering", "Forward Deployment Engineering", "AI Recruitment", "Tech Hiring", "APAC Tech Talent", "Malaysia Tech Talent"],
+              "sameAs": ["https://www.linkedin.com/company/recruitable-asia"]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://recruitable.asia/#website",
+              "url": "https://recruitable.asia",
+              "name": "Recruitable",
+              "description": "AI and tech recruitment agency for APAC, US, and Europe",
+              "publisher": { "@id": "https://recruitable.asia/#organization" },
+              "potentialAction": { "@type": "SearchAction", "target": { "@type": "EntryPoint", "urlTemplate": "https://recruitable.asia/jobs?search={search_term_string}" }, "query-input": "required name=search_term_string" }
+            },
+            {
+              "@type": "FAQPage",
+              "mainEntity": [
+                { "@type": "Question", "name": "What types of tech roles does Recruitable specialise in?", "acceptedAnswer": { "@type": "Answer", "text": "Recruitable specialises in AI Engineers, LLM Engineers, ML Engineers, Data Scientists, MLOps Engineers, Forward Deployment Engineers, Software Engineers (full-stack, back-end, mobile), and AI Product Managers." } },
+                { "@type": "Question", "name": "Does Recruitable place talent across APAC?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Our primary talent engine is Kuala Lumpur, Malaysia, with placement coverage across Southeast Asia, the US, and Europe. We specialise in connecting APAC-based engineers with global tech companies." } },
+                { "@type": "Question", "name": "How quickly can Recruitable fill a technical role?", "acceptedAnswer": { "@type": "Answer", "text": "Most technical searches, including multi-stage interview processes, complete within 30 days. We work on both retained and contingency mandates." } },
+                { "@type": "Question", "name": "What makes Recruitable different from other tech recruitment agencies in APAC?", "acceptedAnswer": { "@type": "Answer", "text": "Recruitable presents only top 5% vetted candidates. We specialise exclusively in AI, data, and engineering — not generalist recruitment. Our APAC-first approach gives clients access to deep talent pools in Malaysia and Southeast Asia that US and UK agencies typically miss." } }
+              ]
+            }
+          ]
         })}}/>
       </Head>
       <style>{CSS}</style>
